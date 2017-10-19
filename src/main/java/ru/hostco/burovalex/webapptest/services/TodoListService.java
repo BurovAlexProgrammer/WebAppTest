@@ -10,7 +10,7 @@ package ru.hostco.burovalex.webapptest.services;
 
 import java.util.List;
 
-import org.zkoss.essentials.entity.Todo;
+import ru.hostco.burovalex.webapptest.entity.Todo;
 
 public interface TodoListService {
 

@@ -10,25 +10,21 @@
             </columns>
             <rows>
                 <row>
-                    <cell sclass="row-title">Account :</cell>
-                    <cell><label id="account"/></cell>
+                    <cell sclass="row-title">Наименование процедуры :</cell>
+                    <cell><textbox id="procedureName" constraint="no empty: Введите название процедуры" width="200px"/></cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Full Name :</cell>
-                    <cell><textbox id="fullName" constraint="no empty: Please enter your full name" width="200px"/></cell>
+                    <cell sclass="row-title">ФИО врача :</cell>
+                    <cell><textbox id="doctorFullName" constraint="no empty: Введите ФИО врача" width="200px"/></cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Email :</cell>
-                    <cell><textbox id="email" constraint="/.+@.+\.[a-z]+/: Please enter an e-mail address" width="200px"/></cell>
+                    <cell sclass="row-title">Цена услуги :</cell>
+                    <cell><datebox id="procedurePrice" constraint="no future" width="200px"/></cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Birthday :</cell>
-                    <cell><datebox id="birthday" constraint="no future" width="200px"/></cell>
-                </row>
-                <row>
-                    <cell sclass="row-title">Country :</cell>
+                    <cell sclass="row-title">День недели :</cell>
                     <cell>
-                        <listbox id="country" mold="select" width="200px">
+                        <listbox id="procedureDay" mold="select" width="200px">
                             <template name="model">
                                 <listitem label="${each}" />
                             </template>
@@ -36,15 +32,14 @@
                     </cell>
                 </row>
                 <row>
-                    <cell sclass="row-title">Bio :</cell>
-                    <cell><textbox id="bio" multiline="true" hflex="1" height="200px" /></cell>
+                    <cell sclass="row-title">Время :</cell>
+                    <cell><timebox id="procedureTime" width="200px" /></cell>
                 </row>
             </rows>
         </grid>
         <div>You are editing <label id="nameLabel"/>'s profile.</div>
         <hlayout>
-            <button id="saveProfile" label="Save"/>
-            <button id="reloadProfile" label="Reload"/>
+            <button id="addProcedure" label="Добавить процедуру"/>
         </hlayout>
     </vlayout>
 </window>

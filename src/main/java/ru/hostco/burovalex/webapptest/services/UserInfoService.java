@@ -8,7 +8,7 @@ Copyright (C) 2012 Potix Corporation. All Rights Reserved.
 */
 package ru.hostco.burovalex.webapptest.services;
 
-import org.zkoss.essentials.entity.User;
+import ru.hostco.burovalex.webapptest.entity.User;
 
 public interface UserInfoService {
 
