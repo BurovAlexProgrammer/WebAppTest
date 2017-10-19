@@ -1,0 +1,8 @@
+<div hflex="1" vflex="1" sclass="footer" align="right" >
+    <hbox hflex="1" vflex="1" align="center" spacing="8px">
+        <space spacing="20px"/>
+        <image src="/imgs/hostco_logo.jpg" width="210px" height="70px"/>
+        <space spacing="50px"/>
+        <label value="Платные процедуры" style="font-size:35px" />
+    </hbox>
+</div>
