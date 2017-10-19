@@ -1,0 +1,22 @@
+<zk>
+	<borderlayout hflex="1" vflex="1">
+		<north height="100px" border="none" >
+			<label style="font-size:50px">North for header</label>
+		</north>
+		<west width="260px" border="none" collapsible="true"
+			  splittable="true" minsize="300">
+			<label style="font-size:50px">West for sidebar</label>
+		</west>
+		<center id="mainContent" autoscroll="true">
+			<window viewModel="@id('vm')@init('ru.hostco.burovalex.webapptest.Main')" validationMessages="@id('vmsgs')">
+				<label style="font-size:50px">Center for content</label>
+				<hlayout>count: <label value="@load(vm.count)" /></hlayout>
+				<button label="add" onClick="@command('cmd')"/>
+				<image src="/imgs/zk_logo.png" width="90px"/>
+			</window>
+		</center>
+		<south height="50px" border="none">
+			<include src="footer.zul"/>
+		</south>
+	</borderlayout>
+</zk>

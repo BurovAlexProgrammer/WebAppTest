@@ -1,0 +1,8 @@
+<div hflex="1" vflex="1" sclass="footer" align="right" >
+    <hbox hflex="1" vflex="1" align="center" pack="end" spacing="8px">
+            <label value="Powered by" style="font-size:16px" />
+            <image src="/imgs/zk_logo.png" width="50px" height="40px"/>
+            <image src="/imgs/ij_logo.png" width="40px" height="40px"/>
+        <space spacing="1px"/>
+    </hbox>
+</div>
