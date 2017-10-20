@@ -1,5 +1,9 @@
 package ru.hostco.burovalex.webapptest;
 
+import org.zkoss.bind.ValidationContext;
+import org.zkoss.bind.Validator;
+import org.zkoss.bind.validator.AbstractValidator;
+import org.zkoss.bind.validator.BeanValidator;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
@@ -26,7 +30,7 @@ public class InputController extends SelectorComposer<Component> {
     @Wire
     Timebox procedureTime;
     @Wire
-    Textbox procedureRoomNumber;
+    Textbox roomNumber;
 
 
     @Override
@@ -40,7 +44,19 @@ public class InputController extends SelectorComposer<Component> {
 
     @Listen("onClick=#addProcedure")
     public void addProcedure() {
-
+        Messagebox.show("Done!");
     }
+
+
+
+
+
+    //VALIDATIONS
+    public Validator roomNumberValidator = new AbstractValidator() {
+        public void validate(ValidationContext context) {
+            Integer value = (Integer)context.getProperty().getValue();
+            if (value<=0) addInvalidMessage(context, "Номер кабинета болжен быть больше 0");
+        }
+    };
 
 }

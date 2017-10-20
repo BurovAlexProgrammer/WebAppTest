@@ -1,7 +1,10 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window apply="ru.hostco.burovalex.webapptest.InputController"
+<window
+        apply="ru.hostco.burovalex.webapptest.InputController"
+        validationMessages="@id('validMessages')"
+        form="@id('vm') @load(vm) @save(vm, before='submit')"
         border="normal" hflex="1" vflex="1" contentStyle="overflow:auto">
-    <caption sclass="fn-caption" label="Profile (MVC)"/>
+    <caption sclass="fn-caption" label="Добавление новой процедуры"/>
     <vlayout>
         <grid width="500px">
             <columns>
@@ -19,7 +22,7 @@
                 </row>
                 <row>
                     <cell sclass="row-title">Цена услуги :</cell>
-                    <cell><datebox id="procedurePrice" constraint="no future" width="200px"/></cell>
+                    <cell><intbox id="procedurePrice" constraint="no empty: Введите цену услуги" width="200px"/></cell>
                 </row>
                 <row>
                     <cell sclass="row-title">День недели :</cell>
@@ -33,7 +36,13 @@
                 </row>
                 <row>
                     <cell sclass="row-title">Время :</cell>
-                    <cell><timebox id="procedureTime" width="200px" /></cell>
+                    <cell><timebox id="procedureTime" width="200px" format="hh:mm" /></cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">Номер кабинета :</cell>
+                    <cell><intbox id="roomNumber" width="200px" value="@save(vm.roomNumber) @validator(ru.hostco.burovalex.webapptest.InputController.roomNumberValidator)"/>
+                        <label value="@load(validMessages['roomNumber'])"/>
+                    </cell>
                 </row>
             </rows>
         </grid>
