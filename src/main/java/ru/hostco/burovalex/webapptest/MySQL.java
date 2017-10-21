@@ -1,41 +1,42 @@
 package ru.hostco.burovalex.webapptest;
 
-import net.sf.jasperreports.data.jdbc.*;
-
 import java.sql.*;
 
-public class db {
+public class MySQL {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        conn.Connect();
-        conn.CreateDB();
-        conn.WriteDB();
-        conn.ReadDB();
-        conn.CloseDB();
+        db.Connect();
+        db.CreateDB();
+        //db.WriteDB();
+        db.ReadDB();
+        db.CloseDB();
     }
 
-    public static class conn {
-        public static Connection conn;
+
+    public static class db {
+        public static Connection connection;
         public static Statement statement;
         public static ResultSet resultSet;
 
         // --------Создание таблицы--------
         public static void CreateDB() throws ClassNotFoundException, SQLException
         {
-            statement = conn.createStatement();
-            statement.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
-
-            System.out.println("Таблица создана или уже существует.");
+            try {
+                Class.forName("org.sqlite.JDBC");
+                statement = connection.createStatement();
+                statement.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
+                System.out.println("Таблица создана или уже существует.");
+            } catch (SQLException e) {System.err.println(e.getMessage());}
         }
 
         // --------ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ--------
         public static void Connect() throws ClassNotFoundException, SQLException
         {
-            conn = null;
-            JdbcDataAdapter adapter;
-            conn = DriverManager.getConnection("jdbc:sqlite:TEST1.s3db");
-
-            System.out.println("База Подключена!");
+            try {
+                connection = null;
+                connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+                System.out.println("База Подключена!");
+        } catch (SQLException e) {System.err.println(e.getMessage());}
         }
 
         // --------Заполнение таблицы--------
@@ -70,11 +71,12 @@ public class db {
         // --------Закрытие--------
         public static void CloseDB() throws ClassNotFoundException, SQLException
         {
-            conn.close();
-            statement.close();
-            resultSet.close();
-
-            System.out.println("Соединение с БД закрыто.");
+            try {
+                connection.close();
+                statement.close();
+                resultSet.close();
+                System.out.println("Соединение с БД закрыто.");
+            } catch (SQLException e) {}
         }
 
 

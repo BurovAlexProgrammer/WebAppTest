@@ -3,23 +3,20 @@ package ru.hostco.burovalex.webapptest;
 import org.zkoss.bind.ValidationContext;
 import org.zkoss.bind.Validator;
 import org.zkoss.bind.validator.AbstractValidator;
-import org.zkoss.bind.validator.BeanValidator;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
-import ru.hostco.burovalex.webapptest.entity.User;
 import ru.hostco.burovalex.webapptest.services.*;
 
 import java.util.List;
-import java.util.Set;
 
 public class InputController extends SelectorComposer<Component> {
     private static final long serialVersionUID = 1L;
     private Component formComponent;
-    private db db;
+    private MySQL db;
     //wire components
     @Wire
     Textbox procedureName;
@@ -30,10 +27,14 @@ public class InputController extends SelectorComposer<Component> {
     @Wire
     Listbox procedureDay;
     @Wire
+    Label procedureDayMessage;
+    @Wire
     Timebox procedureTime;
     @Wire
     Intbox roomNumber;
 
+    @Wire
+    Listbox listb;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception{
@@ -41,16 +42,17 @@ public class InputController extends SelectorComposer<Component> {
         formComponent = comp;
         ListModelList<String> procedureDayModel = new ListModelList<String>(Common.getDayOfWeekList());
         procedureDay.setModel(procedureDayModel);
-        db = new db();
+        Listitem listitem=procedureDay.getItemAtIndex(1);
+        procedureDay.setSelectedItem(listitem);
+        listitem.setSelected(true);
+        db = new MySQL();
         db.main(null);
     }
 
 
     @Listen("onClick=#addProcedure")
     public void addProcedure() {
-//        Clients.showNotification("HELLOOOOOOOOOO MY FREND))!!!");
-        Clients.submitForm(formComponent);
-//        Messagebox.show("Done! Doctor: "+doctorFullName.getValue()+"   Error count: "+myValidate());
+        myValidate();
 //        procedureName.clearErrorMessage();
 //        doctorFullName.clearErrorMessage();
 //        procedurePrice.clearErrorMessage();
@@ -72,11 +74,15 @@ public class InputController extends SelectorComposer<Component> {
         }
     };
 
-    int myValidate() {
+    boolean myValidate() {
+        boolean error = false;
         procedureName.getValue();
         procedurePrice.getValue();
-        int error = 0;
-        if (!roomNumber.isValid()) error++;
+
+        try {Clients.showNotification("Item: "+findSelectedItem(listb));
+
+        } catch (Exception e) {Clients.alert(e.getMessage());}
+        if (!roomNumber.isValid()) error = true;
         return error;
     }
 
@@ -90,6 +96,14 @@ public class InputController extends SelectorComposer<Component> {
         }
 
         return isValid;
+    }
+
+    int findSelectedItem(Listbox lbox) {
+        int index=-1;
+            for (int i=0; i<lbox.getItemCount(); i++) {
+                if (lbox.getItems().get(i).isSelected()) index=i;
+            }
+        return index;
     }
 
 }

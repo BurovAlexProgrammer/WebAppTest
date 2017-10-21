@@ -50,6 +50,7 @@
           <element id="library" level="project" name="Maven: org.zkoss.zk:zhtml:8.0.2.2-Eval" />
           <element id="library" level="project" name="Maven: org.zkoss:zsoup:1.8.2.5" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
+          <element id="library" level="project" name="Maven: org.xerial:sqlite-jdbc:3.20.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">
