@@ -22,7 +22,7 @@
                 </row>
                 <row>
                     <cell sclass="row-title">Цена услуги :</cell>
-                    <cell><intbox id="procedurePrice" constraint="no empty: Введите цену услуги" width="200px"/></cell>
+                    <cell><intbox id="procedurePrice" constraint="no empty: Введите цену услуги, no negative: Цена не может быть отрицательной" width="200px"/></cell>
                 </row>
                 <row>
                     <cell sclass="row-title">День недели :</cell>
@@ -36,12 +36,12 @@
                 </row>
                 <row>
                     <cell sclass="row-title">Время :</cell>
-                    <cell><timebox id="procedureTime" width="200px" format="hh:mm" /></cell>
+                    <cell><timebox id="procedureTime" width="200px" format="HH:mm" /></cell>
                 </row>
                 <row>
                     <cell sclass="row-title">Номер кабинета :</cell>
-                    <cell><intbox id="roomNumber" width="200px" value="@save(vm.roomNumber) @validator(ru.hostco.burovalex.webapptest.InputController.roomNumberValidator)"/>
-                        <label value="@load(validMessages['roomNumber'])"/>
+                    <cell>
+                        <intbox id="roomNumber" width="200px" constraint="no empty: Введите номер кабинета, no negative: Число должно быть неотрицательным"/>
                     </cell>
                 </row>
             </rows>

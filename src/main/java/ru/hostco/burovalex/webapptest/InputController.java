@@ -13,41 +13,54 @@ import org.zkoss.zul.*;
 import ru.hostco.burovalex.webapptest.entity.User;
 import ru.hostco.burovalex.webapptest.services.*;
 
+import java.util.List;
 import java.util.Set;
 
 public class InputController extends SelectorComposer<Component> {
     private static final long serialVersionUID = 1L;
-
+    private Component formComponent;
+    private db db;
     //wire components
     @Wire
     Textbox procedureName;
     @Wire
     Textbox doctorFullName;
     @Wire
-    Textbox procedurePrice;
+    Intbox procedurePrice;
     @Wire
     Listbox procedureDay;
     @Wire
     Timebox procedureTime;
     @Wire
-    Textbox roomNumber;
+    Intbox roomNumber;
 
 
     @Override
     public void doAfterCompose(Component comp) throws Exception{
         super.doAfterCompose(comp);
-
+        formComponent = comp;
         ListModelList<String> procedureDayModel = new ListModelList<String>(Common.getDayOfWeekList());
         procedureDay.setModel(procedureDayModel);
+        db = new db();
+        db.main(null);
     }
 
 
     @Listen("onClick=#addProcedure")
     public void addProcedure() {
-        Messagebox.show("Done!");
+//        Clients.showNotification("HELLOOOOOOOOOO MY FREND))!!!");
+        Clients.submitForm(formComponent);
+//        Messagebox.show("Done! Doctor: "+doctorFullName.getValue()+"   Error count: "+myValidate());
+//        procedureName.clearErrorMessage();
+//        doctorFullName.clearErrorMessage();
+//        procedurePrice.clearErrorMessage();
+//        procedureTime.clearErrorMessage();
+//        roomNumber.clearErrorMessage();
+        //roomNumber.setValue(123);
+        //roomNumber.setErrorMessage("WTF");
+        //procedureName.
+
     }
-
-
 
 
 
@@ -58,5 +71,25 @@ public class InputController extends SelectorComposer<Component> {
             if (value<=0) addInvalidMessage(context, "Номер кабинета болжен быть больше 0");
         }
     };
+
+    int myValidate() {
+        procedureName.getValue();
+        procedurePrice.getValue();
+        int error = 0;
+        if (!roomNumber.isValid()) error++;
+        return error;
+    }
+
+    public static boolean validate(Component component) {
+        boolean isValid=true;
+        //boolean isValid = checkIsValid(component);
+
+        List<Component> children = component.getChildren();
+        for (Component each: children) {
+            validate(each);
+        }
+
+        return isValid;
+    }
 
 }
