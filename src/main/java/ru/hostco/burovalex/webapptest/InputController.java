@@ -1,5 +1,6 @@
 package ru.hostco.burovalex.webapptest;
 
+import javassist.NotFoundException;
 import org.zkoss.bind.ValidationContext;
 import org.zkoss.bind.Validator;
 import org.zkoss.bind.validator.AbstractValidator;
@@ -11,6 +12,8 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.*;
 import ru.hostco.burovalex.webapptest.services.*;
 
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class InputController extends SelectorComposer<Component> {
@@ -33,8 +36,6 @@ public class InputController extends SelectorComposer<Component> {
     @Wire
     Intbox roomNumber;
 
-    @Wire
-    Listbox listb;
 
     @Override
     public void doAfterCompose(Component comp) throws Exception{
@@ -45,14 +46,23 @@ public class InputController extends SelectorComposer<Component> {
         Listitem listitem=procedureDay.getItemAtIndex(1);
         procedureDay.setSelectedItem(listitem);
         listitem.setSelected(true);
+        Date date = new Date();
+        date.setTime(10800000); //8 утра
+        procedureTime.setValue(date);
         db = new MySQL();
-        db.main(null);
+        db.Connect();
+        db.createDB();
+        db.WriteProcedure();
+        db.ReadProcedure();
+        db.CloseDB();
     }
 
 
     @Listen("onClick=#addProcedure")
     public void addProcedure() {
-        myValidate();
+        try {
+            myValidate();
+        } catch (Exception e) {System.err.println(e.getMessage());}
 //        procedureName.clearErrorMessage();
 //        doctorFullName.clearErrorMessage();
 //        procedurePrice.clearErrorMessage();
@@ -74,14 +84,16 @@ public class InputController extends SelectorComposer<Component> {
         }
     };
 
-    boolean myValidate() {
+    public boolean myValidate() throws SQLException, ClassNotFoundException {
         boolean error = false;
-        procedureName.getValue();
+        MySQL mdb = new MySQL();
         procedurePrice.getValue();
-
-        try {Clients.showNotification("Item: "+findSelectedItem(listb));
-
-        } catch (Exception e) {Clients.alert(e.getMessage());}
+        Date date = procedureTime.getValue();
+        Clients.showNotification("Date:"+date.toString()+"  Time(long):"+date.getTime());
+            mdb.Connect();
+            //mdb.WriteProcedure(procedureName.getValue(), doctorFullName.getValue(), procedurePrice.getValue(), findSelectedItem(procedureDay), procedureTime.getValue().getTime(), roomNumber.getValue());
+            mdb.ReadProcedure();
+            mdb.CloseDB();
         if (!roomNumber.isValid()) error = true;
         return error;
     }

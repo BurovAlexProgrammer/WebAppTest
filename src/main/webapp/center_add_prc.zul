@@ -28,16 +28,6 @@
                     <cell sclass="row-title">День недели :</cell>
                     <cell>
                         <listbox id="procedureDay" mold="select" width="200px">
-                            <template name="model">
-                                <listitem label="${each}" />
-                            </template>
-                        </listbox>
-                    </cell>
-                </row>
-                <row>
-                    <cell sclass="row-title">День недели :</cell>
-                    <cell>
-                        <listbox id="listb" mold="select" width="200px">
                                 <listitem label="Пн" selected="true"/>
                                 <listitem label="Вт"/>
                                 <listitem label="Ср"/>
@@ -45,9 +35,7 @@
                                 <listitem label="Пт"/>
                                 <listitem label="Сб"/>
                                 <listitem label="Вс"/>
-
                         </listbox>
-
                     </cell>
                 </row>
                 <row>

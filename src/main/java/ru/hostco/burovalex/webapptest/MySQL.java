@@ -1,84 +1,93 @@
 package ru.hostco.burovalex.webapptest;
 
+import org.exolab.castor.types.DateTime;
+
 import java.sql.*;
+import java.util.Date;
 
 public class MySQL {
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        db.Connect();
-        db.CreateDB();
-        //db.WriteDB();
-        db.ReadDB();
-        db.CloseDB();
-    }
+        public Connection connection;
+        public Statement statement;
+        public ResultSet resultSet;
+        final String path = "jdbc:sqlite:test.db";
 
-
-    public static class db {
-        public static Connection connection;
-        public static Statement statement;
-        public static ResultSet resultSet;
 
         // --------Создание таблицы--------
-        public static void CreateDB() throws ClassNotFoundException, SQLException
+        public void createDB() throws ClassNotFoundException, SQLException
         {
             try {
+                statement = null;
                 Class.forName("org.sqlite.JDBC");
+                String sqlQuery = "CREATE TABLE if not exists table1 ('ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'NAME' text);";
                 statement = connection.createStatement();
-                statement.execute("CREATE TABLE if not exists 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'name' text, 'phone' INT);");
+                statement.execute(sqlQuery);
                 System.out.println("Таблица создана или уже существует.");
-            } catch (SQLException e) {System.err.println(e.getMessage());}
+            } catch (SQLException e) {logError(e.getMessage());}
         }
 
         // --------ПОДКЛЮЧЕНИЕ К БАЗЕ ДАННЫХ--------
-        public static void Connect() throws ClassNotFoundException, SQLException
+        public void Connect() throws ClassNotFoundException, SQLException
         {
             try {
                 connection = null;
-                connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
+                connection = DriverManager.getConnection(path);
                 System.out.println("База Подключена!");
         } catch (SQLException e) {System.err.println(e.getMessage());}
         }
 
         // --------Заполнение таблицы--------
-        public static void WriteDB() throws SQLException
+        public void WriteProcedure() throws SQLException
         {
-            statement.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Petya', 125453); ");
-            statement.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Vasya', 321789); ");
-            statement.execute("INSERT INTO 'users' ('name', 'phone') VALUES ('Masha', 456123); ");
+            try {
+                String sqlQuery = "INSERT INTO table1 (name) VALUES ('name123')";
+                log(sqlQuery);
 
-            System.out.println("Таблица заполнена");
+//                statement.execute("INSERT INTO " + procedure.table.name + " (" +
+//                        procedure.field.name + ", " + procedure.field.doctorFullName + ", " + procedure.field.price + ", " + procedure.field.day + ", " + procedure.field.time + ", " + procedure.field.roomNumber +
+//                        ") " +
+//                        "VALUES (" +
+//                        name + " ," + doctorFullName + " ," + price + " ," + day + " ," + time + " ," + roomNumber +
+//                        "); ");
+                statement.execute(sqlQuery);
+                log("Таблица заполнена");
+            } catch (SQLException e) {logError(e);}
         }
 
         // -------- Вывод таблицы--------
-        public static void ReadDB() throws ClassNotFoundException, SQLException
+        public void ReadProcedure() throws ClassNotFoundException, SQLException
         {
-            resultSet = statement.executeQuery("SELECT * FROM users");
-
+            resultSet = statement.executeQuery("SELECT * FROM table1");
             while(resultSet.next())
             {
                 int id = resultSet.getInt("id");
                 String  name = resultSet.getString("name");
-                String  phone = resultSet.getString("phone");
                 System.out.println( "ID = " + id );
                 System.out.println( "name = " + name );
-                System.out.println( "phone = " + phone );
-                System.out.println();
             }
-
             System.out.println("Таблица выведена");
         }
 
         // --------Закрытие--------
-        public static void CloseDB() throws ClassNotFoundException, SQLException
+        public void CloseDB() throws ClassNotFoundException, SQLException
         {
             try {
                 connection.close();
                 statement.close();
                 resultSet.close();
                 System.out.println("Соединение с БД закрыто.");
-            } catch (SQLException e) {}
+            } catch (SQLException e) {logError(e);}
         }
 
+    void log(String s) {
+        System.out.println(s);
+    }
 
+    void logError(String s) {
+            System.err.println(s);
+    }
+
+    void logError(Exception e) {
+            System.err.println(e.getMessage());
     }
 }
