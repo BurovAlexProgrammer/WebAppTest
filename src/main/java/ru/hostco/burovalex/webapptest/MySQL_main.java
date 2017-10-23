@@ -32,12 +32,12 @@ public class MySQL_main {
                     }
             class type{final static String
                     id = "INTEGER PRIMARY KEY AUTOINCREMENT",
-                    name = "TEXT",
-                    doctorFullName = "TEXT",
-                    price = "INT",
-                    day = "INT",
-                    time = "INT",
-                    roomNumber = "INT";}
+                    name = "text",
+                    doctorFullName = "text",
+                    price = "int",
+                    day = "int",
+                    time = "int",
+                    roomNumber = "int";}
             class table {final static String name="procedure";}
         }
 
@@ -73,7 +73,7 @@ public class MySQL_main {
         }
 
         // --------Заполнение таблицы--------
-        public void WriteProcedure(String name, String doctorFullName, int price, int day, long time, int roomNumber) throws SQLException
+        public void WriteProcedure(String name, String doctorFullName, int price, int day, int time, int roomNumber) throws SQLException
         {
             try {
                 String sqlQuery = "INSERT INTO " + procedure.table.name+ " (" +

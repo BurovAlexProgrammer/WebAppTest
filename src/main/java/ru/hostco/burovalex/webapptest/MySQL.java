@@ -10,17 +10,45 @@ public class MySQL {
         public Connection connection;
         public Statement statement;
         public ResultSet resultSet;
-        final String path = "jdbc:sqlite:test.db";
+
+    final static String path="jdbc:sqlite:procedures.db";
+    static class procedure {
+        static class field{final static String
+                id = "id",
+                name = "name",
+                doctorFullName = "doctorName",
+                price = "price",
+                day = "dayOfWeek",
+                time = "time",
+                roomNumber = "roomNumber";
+        }
+        class type{final static String
+                id = "INTEGER PRIMARY KEY AUTOINCREMENT",
+                name = "text",
+                doctorFullName = "text",
+                price = "int",
+                day = "int",
+                time = "int",
+                roomNumber = "int";}
+        class table {final static String name="procedure";}
+    }
 
 
         // --------Создание таблицы--------
         public void createDB() throws ClassNotFoundException, SQLException
         {
             try {
-                statement = null;
+
+                String space = " ";
                 Class.forName("org.sqlite.JDBC");
-                String sqlQuery = "CREATE TABLE if not exists table1 ('ID' INTEGER PRIMARY KEY AUTOINCREMENT, 'NAME' text);";
-                statement = connection.createStatement();
+                String sqlQuery = "CREATE TABLE if not exists "+ procedure.table.name+" (" +
+                        withQuotes(procedure.field.id) +space+ procedure.type.id+", "+
+                        withQuotes(procedure.field.name) +space+ procedure.type.name+", "+
+                        withQuotes(procedure.field.doctorFullName) +space+ procedure.type.doctorFullName+", "+
+                        withQuotes(procedure.field.price) +space+ procedure.type.price+", "+
+                        withQuotes(procedure.field.day) +space+ procedure.type.day+", "+
+                        withQuotes(procedure.field.time) +space+ procedure.type.time+", "+
+                        withQuotes(procedure.field.roomNumber) +space+ procedure.type.roomNumber+");";
                 statement.execute(sqlQuery);
                 System.out.println("Таблица создана или уже существует.");
             } catch (SQLException e) {logError(e.getMessage());}
@@ -31,24 +59,24 @@ public class MySQL {
         {
             try {
                 connection = null;
+                statement = null;
                 connection = DriverManager.getConnection(path);
                 System.out.println("База Подключена!");
+                statement = connection.createStatement();
         } catch (SQLException e) {System.err.println(e.getMessage());}
         }
 
         // --------Заполнение таблицы--------
-        public void WriteProcedure() throws SQLException
+        public void WriteProcedure(String name, String doctorFullName, int price, int day, int time, int roomNumber)
         {
             try {
-                String sqlQuery = "INSERT INTO table1 (name) VALUES ('name123')";
+                String sqlQuery = ("INSERT INTO "+ procedure.table.name +" ("+
+                        procedure.field.name + ", " + procedure.field.doctorFullName + ", " + procedure.field.price + ", " + procedure.field.day + ", " + procedure.field.time + ", " + procedure.field.roomNumber +
+                        ") VALUES (" +
+                        withQuotes(name) + " ," + withQuotes(doctorFullName) + " ," + price + " ," + day + " ," + time + " ," + roomNumber +
+                        ");");
+                //sqlQuery = "INSERT INTO procedure (name, doctorName, price) VALUES ('name123', 'Doc', 1000)";
                 log(sqlQuery);
-
-//                statement.execute("INSERT INTO " + procedure.table.name + " (" +
-//                        procedure.field.name + ", " + procedure.field.doctorFullName + ", " + procedure.field.price + ", " + procedure.field.day + ", " + procedure.field.time + ", " + procedure.field.roomNumber +
-//                        ") " +
-//                        "VALUES (" +
-//                        name + " ," + doctorFullName + " ," + price + " ," + day + " ," + time + " ," + roomNumber +
-//                        "); ");
                 statement.execute(sqlQuery);
                 log("Таблица заполнена");
             } catch (SQLException e) {logError(e);}
@@ -57,15 +85,26 @@ public class MySQL {
         // -------- Вывод таблицы--------
         public void ReadProcedure() throws ClassNotFoundException, SQLException
         {
-            resultSet = statement.executeQuery("SELECT * FROM table1");
+            resultSet = statement.executeQuery("SELECT * FROM procedure");
             while(resultSet.next())
             {
-                int id = resultSet.getInt("id");
-                String  name = resultSet.getString("name");
-                System.out.println( "ID = " + id );
-                System.out.println( "name = " + name );
+                int id = resultSet.getInt(procedure.field.id);
+                String  name = resultSet.getString(procedure.field.name);
+                String doctorName = resultSet.getString(procedure.field.doctorFullName);
+                int price = resultSet.getInt(procedure.field.price);
+                int day = resultSet.getInt(procedure.field.day);
+                int time = resultSet.getInt(procedure.field.time);
+                int roomNumber = resultSet.getInt(procedure.field.roomNumber);
+
+                log( "ID = " + id );
+                log( "name = " + name );
+                log( "doctorName = " + doctorName );
+                log( "price = " + price );
+                log("day = "+day);
+                log("time = "+time);
+                log("roomNumber = "+roomNumber);
             }
-            System.out.println("Таблица выведена");
+            log("Таблица выведена");
         }
 
         // --------Закрытие--------
@@ -90,4 +129,6 @@ public class MySQL {
     void logError(Exception e) {
             System.err.println(e.getMessage());
     }
+
+    String withQuotes(String s) {return "'"+s+"'";}
 }

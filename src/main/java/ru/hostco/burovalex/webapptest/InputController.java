@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import static org.zkoss.xel.fn.CommonFns.toInt;
+
 public class InputController extends SelectorComposer<Component> {
     private static final long serialVersionUID = 1L;
     private Component formComponent;
@@ -52,7 +54,7 @@ public class InputController extends SelectorComposer<Component> {
         db = new MySQL();
         db.Connect();
         db.createDB();
-        db.WriteProcedure();
+        db.WriteProcedure("12", "doc", 1250, 1, 180000000, 5);
         db.ReadProcedure();
         db.CloseDB();
     }
@@ -91,7 +93,8 @@ public class InputController extends SelectorComposer<Component> {
         Date date = procedureTime.getValue();
         Clients.showNotification("Date:"+date.toString()+"  Time(long):"+date.getTime());
             mdb.Connect();
-            //mdb.WriteProcedure(procedureName.getValue(), doctorFullName.getValue(), procedurePrice.getValue(), findSelectedItem(procedureDay), procedureTime.getValue().getTime(), roomNumber.getValue());
+           // mdb.createDB();
+            mdb.WriteProcedure(procedureName.getValue(), doctorFullName.getValue(), procedurePrice.getValue(), findSelectedItem(procedureDay), toInt(procedureTime.getValue().getTime()), roomNumber.getValue());
             mdb.ReadProcedure();
             mdb.CloseDB();
         if (!roomNumber.isValid()) error = true;
