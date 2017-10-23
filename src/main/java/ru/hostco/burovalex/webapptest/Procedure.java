@@ -1,18 +1,19 @@
 package ru.hostco.burovalex.webapptest;
 
 public class Procedure  {
-    private String procedureName, doctorFullName, proceduteTime;
+    private String name, doctorFullName;
     private int procedurePrice = -1, procedureDay = -1, roomNumber;
+    private long proceduteTime = -1;
 
     public String getProcedureName() {
-        return procedureName;
+        return name;
     }
 
     public String getDoctorFullName() {
         return doctorFullName;
     }
 
-    public String getProceduteTime() {
+    public long getProceduteTime() {
         return proceduteTime;
     }
 
@@ -29,14 +30,14 @@ public class Procedure  {
     }
 
     public void setProcedureName(String procedureName) {
-        this.procedureName = procedureName;
+        this.name = procedureName;
     }
 
     public void setDoctorFullName(String doctorFullName) {
         this.doctorFullName = doctorFullName;
     }
 
-    public void setProceduteTime(String proceduteTime) {
+    public void setProceduteTime(long proceduteTime) {
         this.proceduteTime = proceduteTime;
     }
 

@@ -118,6 +118,32 @@ public class MySQL {
             } catch (SQLException e) {logError(e);}
         }
 
+        public Procedure[] getProcedures() {
+            Procedure[] procedures = null;
+            try {
+                resultSet = statement.executeQuery("SELECT * FROM procedure");
+                procedures = new Procedure[getRowCount(resultSet)];
+                int i=0;
+                while (resultSet.next()) {
+                    int id = resultSet.getInt(procedure.field.id);
+                    String name = resultSet.getString(procedure.field.name);
+                    String doctorName = resultSet.getString(procedure.field.doctorFullName);
+                    int price = resultSet.getInt(procedure.field.price);
+                    int day = resultSet.getInt(procedure.field.day);
+                    int time = resultSet.getInt(procedure.field.time);
+                    int roomNumber = resultSet.getInt(procedure.field.roomNumber);
+                    procedures[i].setProcedureName(name);
+                    procedures[i].setDoctorFullName(doctorName);
+                    procedures[i].setProcedurePrice(price);
+                    procedures[i].setProcedureDay(day);
+                    procedures[i].setProceduteTime(time);
+                    procedures[i].setRoomNumber(roomNumber);
+                }
+                log("Таблица выведена");
+            } catch (SQLException e) {logError(e);}
+            return procedures;
+        }
+
     void log(String s) {
         System.out.println(s);
     }
@@ -131,4 +157,14 @@ public class MySQL {
     }
 
     String withQuotes(String s) {return "'"+s+"'";}
+
+    int getRowCount(ResultSet resultSet) {
+        int i = 0;
+        try {
+            while (resultSet.next()) {
+                i++;
+            }
+        } catch (SQLException e) {logError(e);}
+        return i;
+    }
 }

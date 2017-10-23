@@ -1,0 +1,58 @@
+<?link rel="stylesheet" type="text/css" href="/style.css"?>
+<window
+        apply="ru.hostco.burovalex.webapptest.InputController"
+        validationMessages="@id('validMessages')"
+        form="@id('vm') @load(vm) @save(vm, before='submit')"
+        border="normal" hflex="1" vflex="1" contentStyle="overflow:auto">
+    <caption sclass="fn-caption" label="Добавление новой процедуры"/>
+    <vlayout>
+        <grid width="500px">
+            <columns>
+                <column align="right" hflex="min"/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <cell sclass="row-title">Наименование процедуры :</cell>
+                    <cell><textbox id="procedureName" constraint="no empty: Введите название процедуры" width="200px"/></cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">ФИО врача :</cell>
+                    <cell><textbox id="doctorFullName" constraint="no empty: Введите ФИО врача" width="200px"/></cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">Цена услуги :</cell>
+                    <cell><intbox id="procedurePrice" constraint="no empty: Введите цену услуги, no negative: Цена не может быть отрицательной" width="200px"/></cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">День недели :</cell>
+                    <cell>
+                        <listbox id="procedureDay" mold="select" width="200px">
+                                <listitem label="Пн" selected="true"/>
+                                <listitem label="Вт"/>
+                                <listitem label="Ср"/>
+                                <listitem label="Чт"/>
+                                <listitem label="Пт"/>
+                                <listitem label="Сб"/>
+                                <listitem label="Вс"/>
+                        </listbox>
+                    </cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">Время :</cell>
+                    <cell><timebox id="procedureTime" width="200px" format="HH:mm" /></cell>
+                </row>
+                <row>
+                    <cell sclass="row-title">Номер кабинета :</cell>
+                    <cell>
+                        <intbox id="roomNumber" width="200px" constraint="no empty: Введите номер кабинета, no negative: Число должно быть неотрицательным"/>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+        <div>You are editing <label id="nameLabel"/>'s profile.</div>
+        <hlayout>
+            <button id="addProcedure" label="Добавить процедуру"/>
+        </hlayout>
+    </vlayout>
+</window>

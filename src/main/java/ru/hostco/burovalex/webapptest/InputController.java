@@ -5,10 +5,13 @@ import org.zkoss.bind.ValidationContext;
 import org.zkoss.bind.Validator;
 import org.zkoss.bind.validator.AbstractValidator;
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Page;
+import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.*;
 import ru.hostco.burovalex.webapptest.services.*;
 
@@ -18,10 +21,11 @@ import java.util.List;
 
 import static org.zkoss.xel.fn.CommonFns.toInt;
 
-public class InputController extends SelectorComposer<Component> {
+public class InputController extends GenericForwardComposer {
     private static final long serialVersionUID = 1L;
-    private Component formComponent;
     private MySQL db;
+    private Procedure[] myProcedures;
+    public String[] grades = new String[] {"1","2","3"};
     //wire components
     @Wire
     Textbox procedureName;
@@ -37,12 +41,29 @@ public class InputController extends SelectorComposer<Component> {
     Timebox procedureTime;
     @Wire
     Intbox roomNumber;
+    @Wire
+    Include inc;
 
+
+    public ComponentInfo doBeforeCompose(Page page, Component parent, ComponentInfo compInfo) {
+        String[] grades = new String[] {"Best", "Better", "Good"};
+        page.setAttribute("grades", grades);
+        try {
+            db = new MySQL();
+            db.Connect();
+            db.createDB();
+            db.WriteProcedure("12", "doc", 1250, 1, 180000000, 5);
+            db.ReadProcedure();
+            myProcedures = db.getProcedures();
+            db.CloseDB();
+        }   catch (SQLException e) {logError(e);}  catch (ClassNotFoundException e) {logError(e);}
+        page.setAttribute("procedures", myProcedures);
+        return super.doBeforeCompose(page, parent, compInfo);
+    }
 
     @Override
     public void doAfterCompose(Component comp) throws Exception{
-        super.doAfterCompose(comp);
-        formComponent = comp;
+        super.doAfterCompose(comp); //comp = Form component
         ListModelList<String> procedureDayModel = new ListModelList<String>(Common.getDayOfWeekList());
         procedureDay.setModel(procedureDayModel);
         Listitem listitem=procedureDay.getItemAtIndex(1);
@@ -56,6 +77,7 @@ public class InputController extends SelectorComposer<Component> {
         db.createDB();
         db.WriteProcedure("12", "doc", 1250, 1, 180000000, 5);
         db.ReadProcedure();
+
         db.CloseDB();
     }
 
@@ -121,4 +143,15 @@ public class InputController extends SelectorComposer<Component> {
         return index;
     }
 
+    void log(String s) {
+        System.out.println(s);
+    }
+
+    void logError(String s) {
+        System.err.println(s);
+    }
+
+    void logError(Exception e) {
+        System.err.println(e.getMessage());
+    }
 }
