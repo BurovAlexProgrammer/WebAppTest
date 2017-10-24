@@ -16,6 +16,7 @@ import org.zkoss.zul.*;
 import ru.hostco.burovalex.webapptest.services.*;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -52,16 +53,20 @@ public class InputController extends GenericForwardComposer {
             db = new MySQL();
             db.Connect();
             db.createDB();
+
             myProcedures = db.getProcedures();
 //            db.ReadProcedure();
 //            myProcedures = db.getProcedures();
 //            db.CloseDB();
 
-        log("myProcedures.lenght: "+myProcedures.length);
-        //log("name[0]: "+myProcedures[0].name);
-        log("name[1]: "+myProcedures[1].name);
         page.setAttribute("procedures", myProcedures);
         page.setAttribute("names", Procedure.getNames(myProcedures));
+        page.setAttribute("doctorNames", Procedure.getDoctorNames(myProcedures));
+        page.setAttribute("prices", Procedure.getPrices(myProcedures));
+        page.setAttribute("days", Procedure.getProcedureDays(myProcedures));
+        page.setAttribute("times", Procedure.getProcedureTimes(myProcedures));
+        page.setAttribute("roomNumbers", Procedure.getRoomNumbers(myProcedures));
+
         }   catch (SQLException e) {logError(e);}  catch (ClassNotFoundException e) {logError(e);}
         return super.doBeforeCompose(page, parent, compInfo);
     }

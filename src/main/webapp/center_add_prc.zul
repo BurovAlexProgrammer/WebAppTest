@@ -70,8 +70,33 @@
         <div>
         <listbox>
             <listitem label="asdasdfsadf"></listitem>
-            <listitem label="${each}" forEach="${names}"></listitem>
+            <listitem label="${each.doctorFullName}" forEach="${procedures}"></listitem>
         </listbox>
         </div>
+        <grid width="800px">
+        <columns>
+            <column align="right" hflex="min"/>
+            <column/>
+        </columns>
+        <rows>
+        <!--Заголовки-->
+        <row>
+            <cell sclass="row-title" align="center" width="190px">Наименование процедуры</cell>
+            <cell sclass="row-title" align="center" width="200px">ФИО врача</cell>
+            <cell sclass="row-title" align="center" width="90px">Стоимость</cell>
+            <cell sclass="row-title" align="center" width="80px">День недели</cell>
+            <cell sclass="row-title" align="center" width="80px">Время</cell>
+            <cell sclass="row-title" align="center" width="80px">Кабинет</cell>
+        </row>
+            <row forEach="${procedures}">
+                <cell sclass="row-title" align="center" width="190px">${each.name}</cell>
+                <cell sclass="row-title" align="center" width="200px">${each.doctorFullName}</cell>
+                <cell sclass="row-title" align="center" width="90px">${each.procedurePrice}</cell>
+                <cell sclass="row-title" align="center" width="80px">4</cell>
+                <cell sclass="row-title" align="center" width="80px">5</cell>
+                <cell sclass="row-title" align="center" width="80px">6</cell>
+            </row>
+        </rows>
+        </grid>
     </vlayout>
 </window>

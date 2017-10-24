@@ -195,6 +195,7 @@ public class MySQL {
             log("procedureLen: "+len);
         } else log("procedures=null");
         Procedure[] newArray = new Procedure[len+1];
+        for (int i=0;i<len;i++) {newArray[i]=procedures[i];}
         newArray[len]=newProcedure;
         log("newArrayLen: "+newArray.length);
         log("newArray.name: "+newArray[len].name);

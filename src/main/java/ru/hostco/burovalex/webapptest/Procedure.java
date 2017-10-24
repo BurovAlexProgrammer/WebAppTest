@@ -5,35 +5,81 @@ import ru.hostco.burovalex.webapptest.services.Common;
 import static ru.hostco.burovalex.webapptest.services.Common.logSwitch;
 
 public class Procedure  {
-    public Procedure(String name, String doctorFullName, int procedurePrice, int procedureDay, int roomNumber, int proceduteTime) {
+    public Procedure(String name, String doctorFullName, int procedurePrice, int procedureDay, int procedureTime, int roomNumber) {
         this.name = name;
         this.doctorFullName = doctorFullName;
         this.procedurePrice = procedurePrice;
         this.procedureDay = procedureDay;
         this.roomNumber = roomNumber;
-        this.proceduteTime = proceduteTime;
+        this.procedureTime = procedureTime;
     }
 
-    public String name, doctorFullName;
-    public int procedurePrice = -1, procedureDay = -1, roomNumber;
-    public long proceduteTime = -1;
+    String name, doctorFullName;
+    int procedurePrice = -1, procedureDay = -1, procedureTime = -1, roomNumber;
 
     public String getProcedureName() {
         return name;
     }
+    public String getDoctorFullName() {
+        return doctorFullName;
+    }
+    public int getProcedurePrice() {
+        return procedurePrice;
+    }
+    public int getProcedureDay() {
+        return procedureDay;
+    }
+    public int getProcedureTime() {
+        return procedureTime;
+    }
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+
 
     public static String[] getNames(Procedure[] procedures) {
-        log("[getNames]");
         String[] result = new String[procedures.length];
-        log("count: "+procedures.length);
         for (int i=0; i<procedures.length;i++) {
-            log(""+i);
-            log("name["+i+"]: "+procedures[i].getProcedureName());
             result[i] = procedures[i].getProcedureName();
         }
         return result;
     }
-
+    public static String[] getDoctorNames(Procedure[] procedures) {
+        String[] result = new String[procedures.length];
+        for (int i=0; i<procedures.length;i++) {
+            result[i] = procedures[i].getDoctorFullName();
+        }
+        return result;
+    }
+    public static int[] getPrices(Procedure[] procedures) {
+        int[] result = new int[procedures.length];
+        for (int i=0; i<procedures.length;i++) {
+            result[i] = procedures[i].getProcedurePrice();
+        }
+        return result;
+    }
+    public static int[] getProcedureDays(Procedure[] procedures) {
+        int[] result = new int[procedures.length];
+        for (int i=0; i<procedures.length;i++) {
+            result[i] = procedures[i].getProcedureDay();
+        }
+        return result;
+    }
+    public static int[] getProcedureTimes(Procedure[] procedures) {
+        int[] result = new int[procedures.length];
+        for (int i=0; i<procedures.length;i++) {
+            result[i] = procedures[i].getProcedureTime();
+        }
+        return result;
+    }
+    public static int[] getRoomNumbers(Procedure[] procedures) {
+        int[] result = new int[procedures.length];
+        for (int i=0; i<procedures.length;i++) {
+            result[i] = procedures[i].getRoomNumber();
+        }
+        return result;
+    }
 
     static void log(String s) {
         if (logSwitch) System.out.println(s);
