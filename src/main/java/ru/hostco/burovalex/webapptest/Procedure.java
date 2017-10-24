@@ -1,55 +1,49 @@
 package ru.hostco.burovalex.webapptest;
 
+import ru.hostco.burovalex.webapptest.services.Common;
+
+import static ru.hostco.burovalex.webapptest.services.Common.logSwitch;
+
 public class Procedure  {
-    private String name, doctorFullName;
-    private int procedurePrice = -1, procedureDay = -1, roomNumber;
-    private long proceduteTime = -1;
+    public Procedure(String name, String doctorFullName, int procedurePrice, int procedureDay, int roomNumber, int proceduteTime) {
+        this.name = name;
+        this.doctorFullName = doctorFullName;
+        this.procedurePrice = procedurePrice;
+        this.procedureDay = procedureDay;
+        this.roomNumber = roomNumber;
+        this.proceduteTime = proceduteTime;
+    }
+
+    public String name, doctorFullName;
+    public int procedurePrice = -1, procedureDay = -1, roomNumber;
+    public long proceduteTime = -1;
 
     public String getProcedureName() {
         return name;
     }
 
-    public String getDoctorFullName() {
-        return doctorFullName;
+    public static String[] getNames(Procedure[] procedures) {
+        log("[getNames]");
+        String[] result = new String[procedures.length];
+        log("count: "+procedures.length);
+        for (int i=0; i<procedures.length;i++) {
+            log(""+i);
+            log("name["+i+"]: "+procedures[i].getProcedureName());
+            result[i] = procedures[i].getProcedureName();
+        }
+        return result;
     }
 
-    public long getProceduteTime() {
-        return proceduteTime;
+
+    static void log(String s) {
+        if (logSwitch) System.out.println(s);
     }
 
-    public int getProcedurePrice() {
-        return procedurePrice;
+    static void logError(String s) {
+        if (logSwitch) System.err.println(s);
     }
 
-    public int getProcedureDay() {
-        return procedureDay;
-    }
-
-    public int getRoomNumber() {
-        return roomNumber;
-    }
-
-    public void setProcedureName(String procedureName) {
-        this.name = procedureName;
-    }
-
-    public void setDoctorFullName(String doctorFullName) {
-        this.doctorFullName = doctorFullName;
-    }
-
-    public void setProceduteTime(long proceduteTime) {
-        this.proceduteTime = proceduteTime;
-    }
-
-    public void setProcedurePrice(int procedurePrice) {
-        this.procedurePrice = procedurePrice;
-    }
-
-    public void setProcedureDay(int procedureDay) {
-        this.procedureDay = procedureDay;
-    }
-
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
+    static void logError(Exception e) {
+        if (logSwitch) System.err.println(e.getMessage());
     }
 }

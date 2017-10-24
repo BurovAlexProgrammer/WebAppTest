@@ -63,9 +63,14 @@
             <button id="addProcedure" label="Добавить процедуру"/>
         </hlayout>
         <div>
+            <listbox>
+                <listitem label="${each}" forEach="${grades}"></listitem>
+            </listbox>
+        </div>
+        <div>
         <listbox>
-            <listitem label="${each.name}" forEach="${procedures}">
-            </listitem>
+            <listitem label="asdasdfsadf"></listitem>
+            <listitem label="${each}" forEach="${names}"></listitem>
         </listbox>
         </div>
     </vlayout>

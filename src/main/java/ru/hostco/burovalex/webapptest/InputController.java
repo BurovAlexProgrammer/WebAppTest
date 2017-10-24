@@ -52,12 +52,17 @@ public class InputController extends GenericForwardComposer {
             db = new MySQL();
             db.Connect();
             db.createDB();
-            db.WriteProcedure("12", "doc", 1250, 1, 180000000, 5);
-            db.ReadProcedure();
             myProcedures = db.getProcedures();
-            db.CloseDB();
-        }   catch (SQLException e) {logError(e);}  catch (ClassNotFoundException e) {logError(e);}
+//            db.ReadProcedure();
+//            myProcedures = db.getProcedures();
+//            db.CloseDB();
+
+        log("myProcedures.lenght: "+myProcedures.length);
+        //log("name[0]: "+myProcedures[0].name);
+        log("name[1]: "+myProcedures[1].name);
         page.setAttribute("procedures", myProcedures);
+        page.setAttribute("names", Procedure.getNames(myProcedures));
+        }   catch (SQLException e) {logError(e);}  catch (ClassNotFoundException e) {logError(e);}
         return super.doBeforeCompose(page, parent, compInfo);
     }
 
@@ -72,13 +77,11 @@ public class InputController extends GenericForwardComposer {
         Date date = new Date();
         date.setTime(10800000); //8 утра
         procedureTime.setValue(date);
-        db = new MySQL();
-        db.Connect();
-        db.createDB();
-        db.WriteProcedure("12", "doc", 1250, 1, 180000000, 5);
-        db.ReadProcedure();
 
-        db.CloseDB();
+//        db.WriteProcedure("12", "doc", 1250, 1, 180000000, 5);
+//        db.ReadProcedure();
+
+        //db.CloseDB();
     }
 
 

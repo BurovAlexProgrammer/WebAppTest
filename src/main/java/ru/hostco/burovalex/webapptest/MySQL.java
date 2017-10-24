@@ -7,9 +7,9 @@ import java.util.Date;
 
 public class MySQL {
 
-        public Connection connection;
-        public Statement statement;
-        public ResultSet resultSet;
+        public static Connection connection;
+        public static PreparedStatement statement;
+        public static ResultSet resultSet;
 
     final static String path="jdbc:sqlite:procedures.db";
     static class procedure {
@@ -49,7 +49,8 @@ public class MySQL {
                         withQuotes(procedure.field.day) +space+ procedure.type.day+", "+
                         withQuotes(procedure.field.time) +space+ procedure.type.time+", "+
                         withQuotes(procedure.field.roomNumber) +space+ procedure.type.roomNumber+");";
-                statement.execute(sqlQuery);
+                statement = connection.prepareStatement(sqlQuery);
+                statement.execute();
                 System.out.println("Таблица создана или уже существует.");
             } catch (SQLException e) {logError(e.getMessage());}
         }
@@ -62,7 +63,6 @@ public class MySQL {
                 statement = null;
                 connection = DriverManager.getConnection(path);
                 System.out.println("База Подключена!");
-                statement = connection.createStatement();
         } catch (SQLException e) {System.err.println(e.getMessage());}
         }
 
@@ -77,7 +77,8 @@ public class MySQL {
                         ");");
                 //sqlQuery = "INSERT INTO procedure (name, doctorName, price) VALUES ('name123', 'Doc', 1000)";
                 log(sqlQuery);
-                statement.execute(sqlQuery);
+                statement = connection.prepareStatement(sqlQuery);
+                statement.execute();
                 log("Таблица заполнена");
             } catch (SQLException e) {logError(e);}
         }
@@ -85,7 +86,9 @@ public class MySQL {
         // -------- Вывод таблицы--------
         public void ReadProcedure() throws ClassNotFoundException, SQLException
         {
-            resultSet = statement.executeQuery("SELECT * FROM procedure");
+            String sqlQuery = "SELECT * FROM procedure";
+            statement = connection.prepareStatement(sqlQuery);
+            resultSet = statement.executeQuery();
             while(resultSet.next())
             {
                 int id = resultSet.getInt(procedure.field.id);
@@ -108,8 +111,7 @@ public class MySQL {
         }
 
         // --------Закрытие--------
-        public void CloseDB() throws ClassNotFoundException, SQLException
-        {
+        public void CloseDB() throws ClassNotFoundException, SQLException {
             try {
                 connection.close();
                 statement.close();
@@ -118,13 +120,22 @@ public class MySQL {
             } catch (SQLException e) {logError(e);}
         }
 
-        public Procedure[] getProcedures() {
+        public Procedure[] getProcedures() throws ClassNotFoundException, SQLException {
+            log("[getProcedures]");
             Procedure[] procedures = null;
-            try {
-                resultSet = statement.executeQuery("SELECT * FROM procedure");
-                procedures = new Procedure[getRowCount(resultSet)];
-                int i=0;
+                String sqlQuery = "SELECT * FROM procedure";
+                statement= connection.prepareStatement(sqlQuery);
+                resultSet = statement.executeQuery();
+//                String[] name = (String[]) resultSet.getArray(procedure.field.name).getArray();  //ВЫЗЫВАЕТ ОШИБКУ java.sql.SQLException: not implemented by SQLite JDBC driver
+//                log("nameLenght:"+name.length);
+//                for (String s:name) {
+//                    log("name:"+name);
+//                }
+//                procedures = new Procedure[getRowCount(resultSet)];
+//                log("row count: "+getRowCount(resultSet));
+//                int i=0;
                 while (resultSet.next()) {
+//log("name:"+1);
                     int id = resultSet.getInt(procedure.field.id);
                     String name = resultSet.getString(procedure.field.name);
                     String doctorName = resultSet.getString(procedure.field.doctorFullName);
@@ -132,15 +143,20 @@ public class MySQL {
                     int day = resultSet.getInt(procedure.field.day);
                     int time = resultSet.getInt(procedure.field.time);
                     int roomNumber = resultSet.getInt(procedure.field.roomNumber);
-                    procedures[i].setProcedureName(name);
-                    procedures[i].setDoctorFullName(doctorName);
-                    procedures[i].setProcedurePrice(price);
-                    procedures[i].setProcedureDay(day);
-                    procedures[i].setProceduteTime(time);
-                    procedures[i].setRoomNumber(roomNumber);
+                    Procedure newProcedure = new Procedure(name, doctorName, price, day, time, roomNumber);
+                    log("====NEWPROC.NAME:  "+newProcedure.name);
+                    procedures = addRowProcedure(procedures, newProcedure);
+//                    procedures[i].setProcedureName(name);
+//                    procedures[i].setDoctorFullName(doctorName);
+//                    procedures[i].setProcedurePrice(price);
+//                    procedures[i].setProcedureDay(day);
+//                    procedures[i].setProceduteTime(time);
+//                    procedures[i].setRoomNumber(roomNumber);
+//                    log("row["+i+"]  procedure.name: "+procedures[i].getProcedureName());
+//                    i++;
                 }
+                log("+++ name: "+procedures[0].name);
                 log("Таблица выведена");
-            } catch (SQLException e) {logError(e);}
             return procedures;
         }
 
@@ -159,12 +175,29 @@ public class MySQL {
     String withQuotes(String s) {return "'"+s+"'";}
 
     int getRowCount(ResultSet resultSet) {
+        log("[getRowCount]");
         int i = 0;
         try {
             while (resultSet.next()) {
                 i++;
             }
+            log("rowCount: "+i);
+            //resultSet.getArray()
         } catch (SQLException e) {logError(e);}
         return i;
+    }
+
+    Procedure[] addRowProcedure(Procedure [] procedures, Procedure newProcedure) {
+        log("[addRow]");
+        int len = 0;
+        if (procedures!=null) {
+            len = procedures.length;
+            log("procedureLen: "+len);
+        } else log("procedures=null");
+        Procedure[] newArray = new Procedure[len+1];
+        newArray[len]=newProcedure;
+        log("newArrayLen: "+newArray.length);
+        log("newArray.name: "+newArray[len].name);
+        return newArray;
     }
 }

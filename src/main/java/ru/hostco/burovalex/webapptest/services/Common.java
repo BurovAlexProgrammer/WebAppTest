@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Common {
+    public static boolean logSwitch = true;
     static List<String> dayOfWeek = new ArrayList<String>();
     static {
         dayOfWeek.add("Пн");
