@@ -1,7 +1,5 @@
 package ru.hostco.burovalex.webapptest;
 
-import javassist.NotFoundException;
-import org.zkoss.bind.BindComposer;
 import org.zkoss.bind.ValidationContext;
 import org.zkoss.bind.Validator;
 import org.zkoss.bind.annotation.BindingParam;
@@ -10,22 +8,20 @@ import org.zkoss.bind.validator.AbstractValidator;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.metainfo.ComponentInfo;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.*;
-import ru.hostco.burovalex.webapptest.services.*;
+import ru.hostco.burovalex.webapptest.services.Common;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import static org.zkoss.xel.fn.CommonFns.toInt;
 
-public class InputController extends BindComposer {
+public class InputControllerBackup extends GenericForwardComposer {
     private static final long serialVersionUID = 1L;
     private MySQL db;
     private Procedure[] myProcedures;
@@ -46,26 +42,26 @@ public class InputController extends BindComposer {
     Include inc;
 
 
-//    public ComponentInfo doBeforeCompose(Page page, Component parent, ComponentInfo compInfo) {
-//        try {
-//
+    public ComponentInfo doBeforeCompose(Page page, Component parent, ComponentInfo compInfo) {
+        try {
+            db = new MySQL();
+            db.Connect();
+            db.createDB();
+
+            myProcedures = db.getProcedures();
+//            db.ReadProcedure();
 //            myProcedures = db.getProcedures();
-////            db.ReadProcedure();
-////            myProcedures = db.getProcedures();
-////            db.CloseDB();
-//
-//        page.setAttribute("procedures", myProcedures);
-//
-//        }   catch (SQLException e) {logError(e);}  catch (ClassNotFoundException e) {logError(e);}
-//        return super.doBeforeCompose(page, parent, compInfo);
-//    }
+//            db.CloseDB();
+
+        page.setAttribute("procedures", myProcedures);
+
+        }   catch (SQLException e) {logError(e);}  catch (ClassNotFoundException e) {logError(e);}
+        return super.doBeforeCompose(page, parent, compInfo);
+    }
 
     @Override
     public void doAfterCompose(Component comp) throws Exception{
         super.doAfterCompose(comp); //comp = Form component
-        db = new MySQL();
-        db.Connect();
-        db.createDB();
         ListModelList<String> procedureDayModel = new ListModelList<String>(Common.getDayOfWeekList());
         procedureDay.setModel(procedureDayModel);
         Listitem listitem=procedureDay.getItemAtIndex(1);

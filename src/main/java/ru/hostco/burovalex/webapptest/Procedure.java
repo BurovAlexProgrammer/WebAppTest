@@ -5,8 +5,9 @@ import ru.hostco.burovalex.webapptest.services.Common;
 import static ru.hostco.burovalex.webapptest.services.Common.logSwitch;
 
 public class Procedure  {
-    public Procedure(String name, String doctorFullName, int procedurePrice, int procedureDay, int procedureTime, int roomNumber) {
-        this.name = name;
+    public Procedure(int procedureId, String procedureName, String doctorFullName, int procedurePrice, int procedureDay, int procedureTime, int roomNumber) {
+        this.procedureId = procedureId;
+        this.procedureName = procedureName;
         this.doctorFullName = doctorFullName;
         this.procedurePrice = procedurePrice;
         this.procedureDay = procedureDay;
@@ -14,11 +15,15 @@ public class Procedure  {
         this.procedureTime = procedureTime;
     }
 
-    String name, doctorFullName;
-    int procedurePrice = -1, procedureDay = -1, procedureTime = -1, roomNumber;
+    String procedureName, doctorFullName;
 
+    int procedureId, procedurePrice = -1, procedureDay = -1, procedureTime = -1, roomNumber;
+
+    public int getProcedureId() {
+        return procedureId;
+    }
     public String getProcedureName() {
-        return name;
+        return procedureName;
     }
     public String getDoctorFullName() {
         return doctorFullName;
@@ -36,8 +41,13 @@ public class Procedure  {
         return roomNumber;
     }
 
-
-
+    public static int[] getIds(Procedure[] procedures) {
+        int[] result = new int[procedures.length];
+        for (int i=0; i<procedures.length;i++) {
+            result[i] = procedures[i].getProcedureId();
+        }
+        return result;
+    }
     public static String[] getNames(Procedure[] procedures) {
         String[] result = new String[procedures.length];
         for (int i=0; i<procedures.length;i++) {

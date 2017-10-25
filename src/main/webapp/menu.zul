@@ -1,0 +1,9 @@
+
+<zk>
+    <style src="/widgets/menu/navbar/style.css"/>
+    <div id="container" sclass="vertical" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('demo.menu.navbar.NavigationViewModel')">
+        <navbar id="navbar" orient="vertical" collapsed="false" onSelect="@command('navigatePage', target=self.selectedItem.attributes['navigationPage'])">
+
+        </navbar>
+    </div>
+</zk>

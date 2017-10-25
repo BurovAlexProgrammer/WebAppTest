@@ -121,7 +121,6 @@ public class MySQL {
         }
 
         public Procedure[] getProcedures() throws ClassNotFoundException, SQLException {
-            log("[getProcedures]");
             Procedure[] procedures = null;
                 String sqlQuery = "SELECT * FROM procedure";
                 statement= connection.prepareStatement(sqlQuery);
@@ -143,8 +142,7 @@ public class MySQL {
                     int day = resultSet.getInt(procedure.field.day);
                     int time = resultSet.getInt(procedure.field.time);
                     int roomNumber = resultSet.getInt(procedure.field.roomNumber);
-                    Procedure newProcedure = new Procedure(name, doctorName, price, day, time, roomNumber);
-                    log("====NEWPROC.NAME:  "+newProcedure.name);
+                    Procedure newProcedure = new Procedure(id, name, doctorName, price, day, time, roomNumber);
                     procedures = addRowProcedure(procedures, newProcedure);
 //                    procedures[i].setProcedureName(name);
 //                    procedures[i].setDoctorFullName(doctorName);
@@ -155,7 +153,6 @@ public class MySQL {
 //                    log("row["+i+"]  procedure.name: "+procedures[i].getProcedureName());
 //                    i++;
                 }
-                log("+++ name: "+procedures[0].name);
                 log("Таблица выведена");
             return procedures;
         }
@@ -175,30 +172,24 @@ public class MySQL {
     String withQuotes(String s) {return "'"+s+"'";}
 
     int getRowCount(ResultSet resultSet) {
-        log("[getRowCount]");
         int i = 0;
         try {
             while (resultSet.next()) {
                 i++;
             }
-            log("rowCount: "+i);
             //resultSet.getArray()
         } catch (SQLException e) {logError(e);}
         return i;
     }
 
     Procedure[] addRowProcedure(Procedure [] procedures, Procedure newProcedure) {
-        log("[addRow]");
         int len = 0;
         if (procedures!=null) {
             len = procedures.length;
-            log("procedureLen: "+len);
-        } else log("procedures=null");
+        }
         Procedure[] newArray = new Procedure[len+1];
         for (int i=0;i<len;i++) {newArray[i]=procedures[i];}
         newArray[len]=newProcedure;
-        log("newArrayLen: "+newArray.length);
-        log("newArray.name: "+newArray[len].name);
         return newArray;
     }
 }

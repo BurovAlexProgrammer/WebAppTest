@@ -3,9 +3,8 @@
 		<north height="100px" border="none" >
 			<include src="banner.zul"/>
 		</north>
-		<west width="260px" border="none" collapsible="true"
-			  splittable="true" minsize="300">
-			<label style="font-size:50px">West for sidebar</label>
+		<west width="260px" border="none" collapsible="true" splittable="true" minsize="300">
+			<include src="menu.zul"/>
 		</west>
 		<center id="mainContent" autoscroll="true">
 			<include src="center_add_prc.zul"/>
