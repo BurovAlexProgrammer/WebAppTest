@@ -8,6 +8,16 @@ import org.zkoss.zk.ui.select.annotation.Wire;
 
 public class MyViewModel {
 
+	public String getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(String currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	private String currentPage;
+
 
 	private int bindValue = 0;
 	private String key1 = "WTF";
@@ -36,6 +46,8 @@ public class MyViewModel {
 	@Init
 	public void init() {
 		String key1="123";
+		currentPage="center_add_prc.zul";
+		log("navItem = "+currentPage);
 		//initialization code
 	}
 
@@ -70,6 +82,17 @@ public class MyViewModel {
 
 	void logError(Exception e) {
 		System.err.println(e.getMessage());
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void navigatePage(@BindingParam("target") String target) {
+		switch (target) {
+			case "navItemView":currentPage="view_procedures.zul"; break;
+			case "navItemEdit":currentPage="edit_procedures.zul";break;
+			case "navItemAdmin":currentPage="auth.zul";break;
+			default: currentPage="view_procedures.zul";break;
+		}
 	}
 
 }

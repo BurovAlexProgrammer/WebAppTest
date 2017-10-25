@@ -1,0 +1,33 @@
+<zk>
+    <window>
+        <caption sclass="fn-caption" label="Добавление новой процедуры"/>
+        <vlayout>
+            <grid width="800px">
+                <columns>
+                    <column align="right" hflex="min"/>
+                    <column/>
+                </columns>
+                <rows>
+                    <!--Заголовки-->
+                    <row>
+                        <cell sclass="row-title" align="center" width="190px">Наименование процедуры</cell>
+                        <cell sclass="row-title" align="center" width="200px">ФИО врача</cell>
+                        <cell sclass="row-title" align="center" width="90px">Стоимость</cell>
+                        <cell sclass="row-title" align="center" width="80px">День недели</cell>
+                        <cell sclass="row-title" align="center" width="80px">Время</cell>
+                        <cell sclass="row-title" align="center" width="80px">Кабинет</cell>
+                    </row>
+                    <!--Строка отображения-->
+                    <row id="display-row">
+                        <cell align="center" width="180px"> <label id="dispName"/> </cell>
+                        <cell align="center" width="200px"> <label id="dispDoctorName"/> </cell>
+                        <cell align="center" width="80px"> <label id="dispPrice"/> </cell>
+                        <cell align="center" width="60px"> <label id="dispDay"/> </cell>
+                        <cell align="center" width="70px"> <label id="dispTime"/> </cell>
+                        <cell align="center" width="80px"> <label id="dispRoomNumber"/> </cell>
+                    </row>
+                </rows>
+            </grid>
+        </vlayout>
+    </window>
+</zk>

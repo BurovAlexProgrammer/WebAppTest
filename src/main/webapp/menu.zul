@@ -1,9 +1,16 @@
 
 <zk>
-    <style src="/widgets/menu/navbar/style.css"/>
-    <div id="container" sclass="vertical" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('demo.menu.navbar.NavigationViewModel')">
-        <navbar id="navbar" orient="vertical" collapsed="false" onSelect="@command('navigatePage', target=self.selectedItem.attributes['navigationPage'])">
+   <div id="container" sclass="vertical">
+       <navbar id="navbar" orient="vertical" collapsed="false" onSelect="@command('navigatePage', target=self.selectedItem.id)">
+           <navitem id="navItemView" label="Просмотр" />
+           <navitem id="navItemEdit" label="Редактирование" />
+           <navitem disabled="true"/>
+           <navitem id="navItemAdmin" label="Админ"/>
+       </navbar>
 
-        </navbar>
-    </div>
+   </div>
+    <!--
+    <style src="/widgets/menu/navbar/style.css"/>
+   -->
+
 </zk>

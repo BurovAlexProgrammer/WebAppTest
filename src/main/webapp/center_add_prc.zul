@@ -1,6 +1,5 @@
 <?link rel="stylesheet" type="text/css" href="/style.css"?>
-<window
-        viewModel="@id('vm') @init('ru.hostco.burovalex.webapptest.MyViewModel')">
+<window>
 <toolbar>
     <label value="@bind(vm.bindValue)"/>
     <button label="123" onClick="@command('mycom',k1='12345')"/>

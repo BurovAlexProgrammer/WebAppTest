@@ -1,5 +1,6 @@
 <zk>
-	<borderlayout hflex="1" vflex="1">
+	<borderlayout viewModel="@id('vm') @init('ru.hostco.burovalex.webapptest.MyViewModel')"
+			hflex="1" vflex="1">
 		<north height="100px" border="none" >
 			<include src="banner.zul"/>
 		</north>
@@ -7,7 +8,7 @@
 			<include src="menu.zul"/>
 		</west>
 		<center id="mainContent" autoscroll="true">
-			<include src="center_add_prc.zul"/>
+			<include src="@load(vm.currentPage)"/>
 		</center>
 		<south height="50px" border="none">
 			<include src="footer.zul"/>
