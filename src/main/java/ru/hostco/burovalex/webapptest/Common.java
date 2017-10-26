@@ -1,4 +1,4 @@
-package ru.hostco.burovalex.webapptest.services;
+package ru.hostco.burovalex.webapptest;
 
 import com.sun.org.apache.xerces.internal.xs.StringList;
 

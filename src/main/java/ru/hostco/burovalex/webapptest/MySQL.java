@@ -1,10 +1,8 @@
 package ru.hostco.burovalex.webapptest;
 
-import org.exolab.castor.types.DateTime;
-
 import java.sql.*;
 import java.util.Date;
-import static ru.hostco.burovalex.webapptest.services.Common.*;
+import static ru.hostco.burovalex.webapptest.Common.*;
 
 public class MySQL {
 
@@ -52,7 +50,6 @@ public class MySQL {
                         withQuotes(procedure.field.roomNumber) +space+ procedure.type.roomNumber+");";
                 statement = connection.prepareStatement(sqlQuery);
                 statement.execute();
-                System.out.println("Таблица создана или уже существует.");
             } catch (SQLException e) {logError(e.getMessage());}
         }
 
@@ -63,7 +60,6 @@ public class MySQL {
                 connection = null;
                 statement = null;
                 connection = DriverManager.getConnection(path);
-                System.out.println("База Подключена!");
         } catch (SQLException e) {System.err.println(e.getMessage());}
         }
 
@@ -76,11 +72,9 @@ public class MySQL {
                         ") VALUES (" +
                         withQuotes(name) + " ," + withQuotes(doctorFullName) + " ," + price + " ," + day + " ," + time + " ," + roomNumber +
                         ");");
-                //sqlQuery = "INSERT INTO procedure (name, doctorName, price) VALUES ('name123', 'Doc', 1000)";
                 log(sqlQuery);
                 statement = connection.prepareStatement(sqlQuery);
                 statement.execute();
-                log("Таблица заполнена");
             } catch (SQLException e) {logError(e);}
         }
 
@@ -99,7 +93,6 @@ public class MySQL {
                 int day = resultSet.getInt(procedure.field.day);
                 int time = resultSet.getInt(procedure.field.time);
                 int roomNumber = resultSet.getInt(procedure.field.roomNumber);
-
                 log( "ID = " + id );
                 log( "name = " + name );
                 log( "doctorName = " + doctorName );
@@ -126,16 +119,7 @@ public class MySQL {
                 String sqlQuery = "SELECT * FROM procedure";
                 statement= connection.prepareStatement(sqlQuery);
                 resultSet = statement.executeQuery();
-//                String[] name = (String[]) resultSet.getArray(procedure.field.name).getArray();  //ВЫЗЫВАЕТ ОШИБКУ java.sql.SQLException: not implemented by SQLite JDBC driver
-//                log("nameLenght:"+name.length);
-//                for (String s:name) {
-//                    log("name:"+name);
-//                }
-//                procedures = new Procedure[getRowCount(resultSet)];
-//                log("row count: "+getRowCount(resultSet));
-//                int i=0;
                 while (resultSet.next()) {
-//log("name:"+1);
                     int id = resultSet.getInt(procedure.field.id);
                     String name = resultSet.getString(procedure.field.name);
                     String doctorName = resultSet.getString(procedure.field.doctorFullName);
@@ -147,30 +131,10 @@ public class MySQL {
                     int roomNumber = resultSet.getInt(procedure.field.roomNumber);
                     Procedure newProcedure = new Procedure(id, name, doctorName, price, day, dTime, roomNumber);
                     procedures = addRowProcedure(procedures, newProcedure);
-//                    procedures[i].setProcedureName(name);
-//                    procedures[i].setDoctorFullName(doctorName);
-//                    procedures[i].setProcedurePrice(price);
-//                    procedures[i].setProcedureDay(day);
-//                    procedures[i].setProceduteTime(time);
-//                    procedures[i].setRoomNumber(roomNumber);
-//                    log("row["+i+"]  procedure.name: "+procedures[i].getProcedureName());
-//                    i++;
                 }
                 log("Таблица выведена");
             return procedures;
         }
-//
-//    void log(String s) {
-//        System.out.println(s);
-//    }
-//
-//    void logError(String s) {
-//            System.err.println(s);
-//    }
-//
-//    void logError(Exception e) {
-//            System.err.println(e.getMessage());
-//    }
 
     public static String withQuotes(String s) {return "'"+s+"'";}
 
@@ -180,7 +144,6 @@ public class MySQL {
             while (resultSet.next()) {
                 i++;
             }
-            //resultSet.getArray()
         } catch (SQLException e) {logError(e);}
         return i;
     }
@@ -202,7 +165,6 @@ public class MySQL {
             statement= connection.prepareStatement(sqlQuery);
             statement.executeQuery();
             statement.executeUpdate();
-            log("Done ");
         } catch (SQLException e) {logError(e);}
     }
 }

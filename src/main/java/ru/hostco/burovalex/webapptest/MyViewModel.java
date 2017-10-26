@@ -5,11 +5,9 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.*;
-import ru.hostco.burovalex.webapptest.services.Common;
 import ru.hostco.burovalex.webapptest.MySQL.procedure;
-import static java.lang.Math.toIntExact;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static ru.hostco.burovalex.webapptest.MySQL.withQuotes;
-import static ru.hostco.burovalex.webapptest.services.Common.*;
+import static ru.hostco.burovalex.webapptest.Common.*;
 
 public class MyViewModel {
 
@@ -138,22 +136,21 @@ public class MyViewModel {
 				if (c.getClass()==Textbox.class) {
 					Textbox textbox = (Textbox)c;
 					String thisName = textbox.getName();
-					if (thisName.equals("procedureName")) {log("MyName = "+textbox.getValue()); myProc.setProcedureName(textbox.getValue());myProc.setProcedureId(id);}
-					if (thisName.equals("doctorName")) {log("MyDoctorName = "+textbox.getValue());myProc.setDoctorFullName(textbox.getValue());}
-					if (thisName.equals("price")) {log("MyPrice = "+textbox.getValue());myProc.setProcedurePrice(Integer.parseInt(textbox.getValue()));}
-					if (thisName.equals("roomNumber")) {log("MyRoomNumber = "+textbox.getValue());myProc.setRoomNumber(Integer.parseInt(textbox.getValue()));}
+					if (thisName.equals("procedureName")) {myProc.setProcedureName(textbox.getValue());myProc.setProcedureId(id);}
+					if (thisName.equals("doctorName")) {myProc.setDoctorFullName(textbox.getValue());}
+					if (thisName.equals("price")) {myProc.setProcedurePrice(Integer.parseInt(textbox.getValue()));}
+					if (thisName.equals("roomNumber")) {myProc.setRoomNumber(Integer.parseInt(textbox.getValue()));}
 				}
 				if (c.getClass()==Listbox.class) {
 					Listbox listbox = (Listbox) c;
 					String thisName = listbox.getName();
-					if (thisName.equals("day")) {log("MyDay = "+listbox.getSelectedIndex()); myProc.setProcedureDay(listbox.getSelectedIndex());}
+					if (thisName.equals("day")) {myProc.setProcedureDay(listbox.getSelectedIndex());}
 				}
 				if (c.getClass()==Timebox.class) {
 					Timebox timebox = (Timebox) c;
 					String thisName = timebox.getName();
 					long time = timebox.getValue().getTime();
 					if (thisName.equals("time")) {
-						log("MyTime = "+timebox.getValue().getTime());
 						Date dTime = new Date();
 						dTime.setTime(time);
 						myProc.setProcedureTime(dTime);
@@ -193,7 +190,6 @@ public class MyViewModel {
 	@Command
 	@NotifyChange("isAdmin")
 	public void authAdmin() {
-		log("pass:"+password);
 		if (!isAdmin & password.equals(adminPassword)) isAdmin=true; else isAdmin=false;
 	}
 }

@@ -1,6 +1,5 @@
 package ru.hostco.burovalex.webapptest;
 
-import javassist.NotFoundException;
 import org.zkoss.bind.BindComposer;
 import org.zkoss.bind.ValidationContext;
 import org.zkoss.bind.Validator;
@@ -8,18 +7,12 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.validator.AbstractValidator;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Page;
-import org.zkoss.zk.ui.metainfo.ComponentInfo;
-import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.*;
-import ru.hostco.burovalex.webapptest.services.*;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -82,15 +75,6 @@ public class InputController extends BindComposer {
         try {
             myValidate();
         } catch (Exception e) {System.err.println(e.getMessage());}
-//        procedureName.clearErrorMessage();
-//        doctorFullName.clearErrorMessage();
-//        procedurePrice.clearErrorMessage();
-//        procedureTime.clearErrorMessage();
-//        roomNumber.clearErrorMessage();
-        //roomNumber.setValue(123);
-        //roomNumber.setErrorMessage("WTF");
-        //procedureName.
-
     }
 
 
@@ -110,7 +94,6 @@ public class InputController extends BindComposer {
         Date date = procedureTime.getValue();
         Clients.showNotification("Date:"+date.toString()+"  Time(long):"+date.getTime());
             mdb.Connect();
-           // mdb.createDB();
             mdb.WriteProcedure(procedureName.getValue(), doctorFullName.getValue(), procedurePrice.getValue(), findSelectedItem(procedureDay), toInt(procedureTime.getValue().getTime()), roomNumber.getValue());
             mdb.ReadProcedure();
             mdb.CloseDB();
@@ -120,7 +103,6 @@ public class InputController extends BindComposer {
 
     public static boolean validate(Component component) {
         boolean isValid=true;
-        //boolean isValid = checkIsValid(component);
 
         List<Component> children = component.getChildren();
         for (Component each: children) {

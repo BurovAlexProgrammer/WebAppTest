@@ -1,11 +1,7 @@
 package ru.hostco.burovalex.webapptest;
 
-import ru.hostco.burovalex.webapptest.services.Common;
-
 
 import java.util.Date;
-
-import static ru.hostco.burovalex.webapptest.services.Common.logSwitch;
 
 public class Procedure  {
     public Procedure() {
