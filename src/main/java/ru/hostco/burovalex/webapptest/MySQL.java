@@ -4,6 +4,7 @@ import org.exolab.castor.types.DateTime;
 
 import java.sql.*;
 import java.util.Date;
+import static ru.hostco.burovalex.webapptest.services.Common.*;
 
 public class MySQL {
 
@@ -156,18 +157,18 @@ public class MySQL {
                 log("Таблица выведена");
             return procedures;
         }
-
-    void log(String s) {
-        System.out.println(s);
-    }
-
-    void logError(String s) {
-            System.err.println(s);
-    }
-
-    void logError(Exception e) {
-            System.err.println(e.getMessage());
-    }
+//
+//    void log(String s) {
+//        System.out.println(s);
+//    }
+//
+//    void logError(String s) {
+//            System.err.println(s);
+//    }
+//
+//    void logError(Exception e) {
+//            System.err.println(e.getMessage());
+//    }
 
     String withQuotes(String s) {return "'"+s+"'";}
 
@@ -191,5 +192,15 @@ public class MySQL {
         for (int i=0;i<len;i++) {newArray[i]=procedures[i];}
         newArray[len]=newProcedure;
         return newArray;
+    }
+
+    static void deleteRow(int id) {
+        try {
+            String sqlQuery = "DELETE FROM "+procedure.table.name+" WHERE "+procedure.field.id+" = " + id;
+            statement= connection.prepareStatement(sqlQuery);
+            statement.executeQuery();
+            statement.executeUpdate();
+            log("Done ");
+        } catch (SQLException e) {logError(e);}
     }
 }

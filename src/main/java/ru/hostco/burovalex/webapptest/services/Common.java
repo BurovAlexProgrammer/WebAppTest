@@ -21,4 +21,17 @@ public class Common {
     public static List<String> getDayOfWeekList() {
         return dayOfWeek;
     }
+
+
+    public static void log(String s) {
+        if (logSwitch) System.out.println(s);
+    }
+
+    public static void logError(String s) {
+        if (logSwitch) System.err.println(s);
+    }
+
+    public static void logError(Exception e) {
+        if (logSwitch) System.err.println(e.getMessage());
+    }
 }

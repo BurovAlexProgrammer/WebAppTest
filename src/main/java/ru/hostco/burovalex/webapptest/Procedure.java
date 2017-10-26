@@ -90,16 +90,4 @@ public class Procedure  {
         }
         return result;
     }
-
-    static void log(String s) {
-        if (logSwitch) System.out.println(s);
-    }
-
-    static void logError(String s) {
-        if (logSwitch) System.err.println(s);
-    }
-
-    static void logError(Exception e) {
-        if (logSwitch) System.err.println(e.getMessage());
-    }
 }

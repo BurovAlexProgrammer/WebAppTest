@@ -2,32 +2,57 @@
     <window>
         <caption sclass="fn-caption" label="Добавление новой процедуры"/>
         <vlayout>
-            <grid width="800px">
+            <grid height="50px" vflex="min" model="@load(vm.myProcedures)"
+                  emptyMessage="Nothing in Inbox.">
                 <columns>
-                    <column align="right" hflex="min"/>
-                    <column/>
+                    <column label="Наименование процедуры" align="center" width="190px"/>
+                    <column label="ФИО врача" align="center" width="200px"/>
+                    <column label="Стоимость" align="center" width="90px"/>
+                    <column label="День недели" align="center" width="90px" />
+                    <column label="Время" align="center" width="80px" />
+                    <column label="Кабинет" align="center" width="80px" />
                 </columns>
-                <rows>
-                    <!--Заголовки-->
+                <template name="model">
                     <row>
-                        <cell sclass="row-title" align="center" width="190px">Наименование процедуры</cell>
-                        <cell sclass="row-title" align="center" width="200px">ФИО врача</cell>
-                        <cell sclass="row-title" align="center" width="90px">Стоимость</cell>
-                        <cell sclass="row-title" align="center" width="80px">День недели</cell>
-                        <cell sclass="row-title" align="center" width="80px">Время</cell>
-                        <cell sclass="row-title" align="center" width="80px">Кабинет</cell>
+                        <label id="name" value="@load(each.procedureName)" />
+                        <label value="@load(each.doctorFullName)" />
+                        <label value="@load(each.procedurePrice)"/>
+                        <label value="@load(vm.dayOfWeek[each.procedureDay])"/>
+                        <label value="@load(each.procedureTime)" onCreate="@command('onProcedureTimeChange',prcTime=each.procedureTime,obj=self)"/>
+                        <label value="@load(each.roomNumber)" />
+                        <button label="Delete" onClick="@command('removeRow', deleteId=each.id)" />
                     </row>
-                    <!--Строка отображения-->
-                    <row id="display-row">
-                        <cell align="center" width="180px"> <label id="dispName"/> </cell>
-                        <cell align="center" width="200px"> <label id="dispDoctorName"/> </cell>
-                        <cell align="center" width="80px"> <label id="dispPrice"/> </cell>
-                        <cell align="center" width="60px"> <label id="dispDay"/> </cell>
-                        <cell align="center" width="70px"> <label id="dispTime"/> </cell>
-                        <cell align="center" width="80px"> <label id="dispRoomNumber"/> </cell>
-                    </row>
-                </rows>
+                </template>
             </grid>
         </vlayout>
     </window>
 </zk>
+
+            <!--<grid width="800px">-->
+                <!--<columns>-->
+                    <!--<column align="right" hflex="min"/>-->
+                    <!--<column/>-->
+                <!--</columns>-->
+                <!--<rows>-->
+                    <!--&lt;!&ndash;Заголовки&ndash;&gt;-->
+<!--<row>-->
+<!--<cell sclass="row-title" align="center" width="190px">Наименование процедуры</cell>-->
+<!--<cell sclass="row-title" align="center" width="200px">ФИО врача</cell>-->
+<!--<cell sclass="row-title" align="center" width="90px">Стоимость</cell>-->
+<!--<cell sclass="row-title" align="center" width="80px">День недели</cell>-->
+<!--<cell sclass="row-title" align="center" width="80px">Время</cell>-->
+<!--<cell sclass="row-title" align="center" width="80px">Кабинет</cell>-->
+<!--</row>-->
+        <!--&lt;!&ndash;Строка отображения&ndash;&gt;-->
+<!--<row forEach="{$myProcedures}">-->
+<!--<cell align="center" width="180px"> <label id="dispName"/> </cell>-->
+<!--<cell align="center" width="200px"> <label id="dispDoctorName"/> </cell>-->
+<!--<cell align="center" width="80px"> <label id="dispPrice"/> </cell>-->
+<!--<cell align="center" width="60px"> <label id="dispDay"/> </cell>-->
+<!--<cell align="center" width="70px"> <label id="dispTime"/> </cell>-->
+<!--<cell align="center" width="80px"> <label id="dispRoomNumber"/> </cell>-->
+<!--</row>-->
+        <!--</rows>-->
+        <!--</grid>-->
+
+
