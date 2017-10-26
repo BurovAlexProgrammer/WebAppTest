@@ -8,7 +8,8 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zul.*;
 import ru.hostco.burovalex.webapptest.services.Common;
-
+import ru.hostco.burovalex.webapptest.MySQL.procedure;
+import static java.lang.Math.toIntExact;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ru.hostco.burovalex.webapptest.MySQL.withQuotes;
 import static ru.hostco.burovalex.webapptest.services.Common.*;
 
 public class MyViewModel {
@@ -138,17 +140,45 @@ public class MyViewModel {
 	@NotifyChange("*")
 	public void saveRow(@BindingParam("id") int id, @BindingParam("component") Component component) {
 		try {
-			//Component parent = component.query("row #rowId");
+			Procedure myProc=new Procedure();
 			Component parent = component.getParent();
 			log("Saving row[id:" + id + "]..");
-			log("root: "+parent.toString());
 			List<Component> children = parent.getChildren();
-			int i=1;
 			for (Component c:children) {
-				log(i+"-children name: "+((Textbox)c).getName());
-				i++;
+				if (c.getClass()==Textbox.class) {
+					Textbox textbox = (Textbox)c;
+					String thisName = textbox.getName();
+					if (thisName.equals("procedureName")) {log("MyName = "+textbox.getValue()); myProc.setProcedureName(textbox.getValue());myProc.setProcedureId(id);}
+					if (thisName.equals("doctorName")) {log("MyDoctorName = "+textbox.getValue());myProc.setDoctorFullName(textbox.getValue());}
+					if (thisName.equals("price")) {log("MyPrice = "+textbox.getValue());myProc.setProcedurePrice(Integer.parseInt(textbox.getValue()));}
+					if (thisName.equals("roomNumber")) {log("MyRoomNumber = "+textbox.getValue());myProc.setRoomNumber(Integer.parseInt(textbox.getValue()));}
+				}
+				if (c.getClass()==Listbox.class) {
+					Listbox listbox = (Listbox) c;
+					String thisName = listbox.getName();
+					if (thisName.equals("day")) {log("MyDay = "+listbox.getSelectedIndex()); myProc.setProcedureDay(listbox.getSelectedIndex());}
+				}
+				if (c.getClass()==Timebox.class) {
+					Timebox timebox = (Timebox) c;
+					String thisName = timebox.getName();
+					long time = timebox.getValue().getTime();
+
+					if (thisName.equals("time")) {log("MyTime = "+timebox.getValue().getTime()); myProc.setProcedureTime(toIntExact(time));}
+				}
 			}
-			db.Connect();
-		} catch (SQLException|ClassNotFoundException e) {logError(e);}
+
+			String sqlQuery = "UPDATE "+MySQL.procedure.table.name+" SET " +
+					procedure.field.name +" = "+ withQuotes(myProc.procedureName) +", "+
+					procedure.field.doctorFullName +" = "+ withQuotes(myProc.doctorFullName) +", "+
+					procedure.field.price +" = "+ myProc.procedurePrice +", "+
+					procedure.field.day +" = "+ myProc.procedureDay +", "+
+					procedure.field.time +" = "+ myProc.procedureTime +", "+
+					procedure.field.roomNumber +" = "+ myProc.roomNumber +" "+
+					"WHERE "+ procedure.field.id +" = "+ id;
+			log("sqlQuery: "+sqlQuery);
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:procedures.db");
+			PreparedStatement st = connection.prepareStatement(sqlQuery);
+			st.executeUpdate();
+		} catch (SQLException e) {logError(e);}
 	}
 }

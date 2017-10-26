@@ -10,16 +10,16 @@
                     <column label="День недели" align="center" width="90px" />
                     <column label="Время" align="center" width="80px" />
                     <column label="Кабинет" align="center" width="80px" />
-                    <column align="center" width="80px" />
+                    <column align="center" width="100px" />
                     <column align="center" width="80px" />
                     <column align="center" width="80px" />
                 </columns>
                 <template name="model">
                     <row value="each.procedureId">
-                        <textbox value="@load(each.procedureName)" name="@load(each.procedureId)"/>
-                        <textbox value="@load(each.doctorFullName)" name="blablabla"/>
-                        <textbox value="@load(each.procedurePrice)" width="80px"/>
-                        <listbox selectedIndex="@load(each.procedureDay)" mold="select">
+                        <textbox value="@bind(each.procedureName)" name="procedureName"/>
+                        <textbox value="@bind(each.doctorFullName)" name="doctorName"/>
+                        <textbox value="@bind(each.procedurePrice)" name="price" width="80px"/>
+                        <listbox selectedIndex="@bind(each.procedureDay)" mold="select" name="day">
                             <listitem label="Пн"/>
                             <listitem label="Вт"/>
                             <listitem label="Ср"/>
@@ -28,8 +28,8 @@
                             <listitem label="Сб"/>
                             <listitem label="Вс"/>
                         </listbox>
-                        <timebox value="@load(each.procedureTime)" format="HH:mm" width="70px"/>
-                        <textbox value="@load(each.roomNumber)" constraint="no empty: Введите номер кабинета, no negative: Число должно быть неотрицательным" width="50px"/>
+                        <timebox value="@bind(each.procedureTime)" format="HH:mm" width="70px" name="time"/>
+                        <textbox value="@bind(each.roomNumber)" constraint="no empty: Введите номер кабинета, no negative: Число должно быть неотрицательным" width="50px" name="roomNumber"/>
                         <button label="Сохранить" onClick="@command('saveRow', id=each.procedureId, component=self)" />
                         <button label="Удалить" onClick="@command('deleteRow', id=each.procedureId, component=self)" />
                     </row>

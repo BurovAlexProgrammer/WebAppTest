@@ -5,6 +5,15 @@ import ru.hostco.burovalex.webapptest.services.Common;
 import static ru.hostco.burovalex.webapptest.services.Common.logSwitch;
 
 public class Procedure  {
+    public Procedure() {
+        procedureId=-1;
+        procedureName="Noname";
+        doctorFullName="Noname";
+        procedurePrice=0;
+        procedureDay=0;
+        procedureTime=10800000;
+        roomNumber=0;
+    }
     public Procedure(int procedureId, String procedureName, String doctorFullName, int procedurePrice, int procedureDay, int procedureTime, int roomNumber) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
@@ -17,7 +26,40 @@ public class Procedure  {
 
     String procedureName, doctorFullName;
 
-    int procedureId, procedurePrice = -1, procedureDay = -1, procedureTime = -1, roomNumber;
+    int procedureId;
+
+    public void setProcedureName(String procedureName) {
+        this.procedureName = procedureName;
+    }
+
+    public void setDoctorFullName(String doctorFullName) {
+        this.doctorFullName = doctorFullName;
+    }
+
+    public void setProcedureId(int procedureId) {
+        this.procedureId = procedureId;
+    }
+
+    public void setProcedurePrice(int procedurePrice) {
+        this.procedurePrice = procedurePrice;
+    }
+
+    public void setProcedureDay(int procedureDay) {
+        this.procedureDay = procedureDay;
+    }
+
+    public void setProcedureTime(int procedureTime) {
+        this.procedureTime = procedureTime;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    int procedurePrice = -1;
+    int procedureDay = -1;
+    int procedureTime = -1;
+    int roomNumber;
 
     public int getProcedureId() {
         return procedureId;

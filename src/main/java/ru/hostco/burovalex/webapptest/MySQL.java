@@ -170,7 +170,7 @@ public class MySQL {
 //            System.err.println(e.getMessage());
 //    }
 
-    String withQuotes(String s) {return "'"+s+"'";}
+    public static String withQuotes(String s) {return "'"+s+"'";}
 
     int getRowCount(ResultSet resultSet) {
         int i = 0;

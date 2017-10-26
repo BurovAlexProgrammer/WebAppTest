@@ -14,7 +14,7 @@
                 </columns>
                 <template name="model">
                     <row>
-                        <label id="name" value="@load(each.procedureName)" />
+                        <label value="@load(each.procedureName)" />
                         <label value="@load(each.doctorFullName)" />
                         <label value="@load(each.procedurePrice)"/>
                         <label value="@load(vm.dayOfWeek[each.procedureDay])"/>
