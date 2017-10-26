@@ -1,7 +1,7 @@
 <zk>
     <window>
         <vlayout>
-            <grid height="50px" vflex="min" model="@load(vm.myProcedures)"
+            <grid model="@bind(vm.myProcedures)" sizedByContent="true"
                   emptyMessage="Nothing in Inbox.">
                 <columns>
                     <column label="Наименование процедуры" align="center" width="190px"/>
@@ -35,6 +35,7 @@
                     </row>
                 </template>
             </grid>
+            <button label="Добавить" onClick="@command('addRow')"/>
         </vlayout>
     </window>
 </zk>

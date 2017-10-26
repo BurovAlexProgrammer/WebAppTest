@@ -3,7 +3,7 @@
    <div id="container" sclass="vertical">
        <navbar id="navbar" orient="vertical" collapsed="false" onSelect="@command('navigatePage', target=self.selectedItem.id)">
            <navitem id="navItemView" label="Просмотр" />
-           <navitem id="navItemEdit" label="Редактирование" />
+           <navitem id="navItemEdit" label="Редактирование" visible="@load(vm.isAdmin)"/>
            <navitem disabled="true"/>
            <navitem id="navItemAdmin" label="Админ"/>
        </navbar>

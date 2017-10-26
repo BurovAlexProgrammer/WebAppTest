@@ -2,6 +2,9 @@ package ru.hostco.burovalex.webapptest;
 
 import ru.hostco.burovalex.webapptest.services.Common;
 
+
+import java.util.Date;
+
 import static ru.hostco.burovalex.webapptest.services.Common.logSwitch;
 
 public class Procedure  {
@@ -11,10 +14,10 @@ public class Procedure  {
         doctorFullName="Noname";
         procedurePrice=0;
         procedureDay=0;
-        procedureTime=10800000;
+        procedureTime=new Date();
         roomNumber=0;
     }
-    public Procedure(int procedureId, String procedureName, String doctorFullName, int procedurePrice, int procedureDay, int procedureTime, int roomNumber) {
+    public Procedure(int procedureId, String procedureName, String doctorFullName, int procedurePrice, int procedureDay, Date procedureTime, int roomNumber) {
         this.procedureId = procedureId;
         this.procedureName = procedureName;
         this.doctorFullName = doctorFullName;
@@ -48,7 +51,7 @@ public class Procedure  {
         this.procedureDay = procedureDay;
     }
 
-    public void setProcedureTime(int procedureTime) {
+    public void setProcedureTime(Date procedureTime) {
         this.procedureTime = procedureTime;
     }
 
@@ -58,7 +61,7 @@ public class Procedure  {
 
     int procedurePrice = -1;
     int procedureDay = -1;
-    int procedureTime = -1;
+    Date procedureTime = new Date();
     int roomNumber;
 
     public int getProcedureId() {
@@ -76,9 +79,10 @@ public class Procedure  {
     public int getProcedureDay() {
         return procedureDay;
     }
-    public int getProcedureTime() {
+    public Date getProcedureTime() {
         return procedureTime;
     }
+
     public int getRoomNumber() {
         return roomNumber;
     }
@@ -118,10 +122,10 @@ public class Procedure  {
         }
         return result;
     }
-    public static int[] getProcedureTimes(Procedure[] procedures) {
-        int[] result = new int[procedures.length];
+    public static long[] getProcedureTimes(Procedure[] procedures) {
+        long[] result = new long[procedures.length];
         for (int i=0; i<procedures.length;i++) {
-            result[i] = procedures[i].getProcedureTime();
+            result[i] = procedures[i].getProcedureTime().getTime();
         }
         return result;
     }

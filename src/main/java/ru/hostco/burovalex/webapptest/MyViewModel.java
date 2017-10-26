@@ -23,6 +23,25 @@ import static ru.hostco.burovalex.webapptest.services.Common.*;
 
 public class MyViewModel {
 
+	public boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	private boolean isAdmin = false;
+	public String password = "";
+	private final String adminPassword = "123";
 	public String getCurrentPage() {
 		return currentPage;
 	}
@@ -54,14 +73,6 @@ public class MyViewModel {
 	}
 
 
-
-	@Command("comPlus")
-	@NotifyChange("bindValue")
-	public void comPlus() {
-		//setBindValue(bindValue+1);
-		//log("+");
-	}
-
 	@Command
 	@NotifyChange("*")
 	public void navigatePage(@BindingParam("target") String target) {
@@ -72,25 +83,6 @@ public class MyViewModel {
 			default: currentPage="view_procedures.zul";break;
 		}
 	}
-
-
-	@Command
-	@NotifyChange("*")
-	public void removeRow(@BindingParam("deleteId") String deleteId) {
-		log("++++++++++TRY TO DELETE ROW");
-	}
-
-	//TODO узнать как получить результат в ZUL
-//	@Command
-//	@NotifyChange("*")
-//	public String getDay(@BindingParam("d") int d) {
-//		log("getDAYYYYY:  "+d);
-//		String dayStr="";
-//		try {
-//			dayStr = Common.getDayOfWeekList().get(d);
-//		} catch (Exception e) {logError(e); dayStr="н/д";}
-//		return dayStr;
-//	}
 
 
 
@@ -113,10 +105,8 @@ public class MyViewModel {
 
 
 	@Command
-	public void onProcedureTimeChange(@BindingParam("prcTime") int prcTime, @BindingParam("obj") Object obj) {
-			Date date = new Date();
-			date.setTime(prcTime);
-		((Label)obj).setValue(time2Sign(date.getHours())+":"+time2Sign(date.getMinutes()));
+	public void onProcedureTimeChange(@BindingParam("prcTime") Date prcTime, @BindingParam("obj") Object obj) {
+		((Label)obj).setValue(time2Sign(prcTime.getHours())+":"+time2Sign(prcTime.getMinutes()));
 		}
 
 	String time2Sign(int time) {
@@ -162,8 +152,12 @@ public class MyViewModel {
 					Timebox timebox = (Timebox) c;
 					String thisName = timebox.getName();
 					long time = timebox.getValue().getTime();
-
-					if (thisName.equals("time")) {log("MyTime = "+timebox.getValue().getTime()); myProc.setProcedureTime(toIntExact(time));}
+					if (thisName.equals("time")) {
+						log("MyTime = "+timebox.getValue().getTime());
+						Date dTime = new Date();
+						dTime.setTime(time);
+						myProc.setProcedureTime(dTime);
+					}
 				}
 			}
 
@@ -172,7 +166,7 @@ public class MyViewModel {
 					procedure.field.doctorFullName +" = "+ withQuotes(myProc.doctorFullName) +", "+
 					procedure.field.price +" = "+ myProc.procedurePrice +", "+
 					procedure.field.day +" = "+ myProc.procedureDay +", "+
-					procedure.field.time +" = "+ myProc.procedureTime +", "+
+					procedure.field.time +" = "+ myProc.procedureTime.getTime() +", "+
 					procedure.field.roomNumber +" = "+ myProc.roomNumber +" "+
 					"WHERE "+ procedure.field.id +" = "+ id;
 			log("sqlQuery: "+sqlQuery);
@@ -180,5 +174,26 @@ public class MyViewModel {
 			PreparedStatement st = connection.prepareStatement(sqlQuery);
 			st.executeUpdate();
 		} catch (SQLException e) {logError(e);}
+	}
+
+	@Command
+	@NotifyChange("myProcedures")
+	public void addRow() {
+		try {
+			String sqlQuery = "INSERT INTO "+MySQL.procedure.table.name+
+					" ("+procedure.field.time+") VALUES ("+10800000+")";
+			log("sqlQuery: "+sqlQuery);
+			Connection connection = DriverManager.getConnection("jdbc:sqlite:procedures.db");
+			PreparedStatement st = connection.prepareStatement(sqlQuery);
+			st.executeUpdate();
+			init();
+		} catch (SQLException e) {logError(e);}
+	}
+
+	@Command
+	@NotifyChange("isAdmin")
+	public void authAdmin() {
+		log("pass:"+password);
+		if (!isAdmin & password.equals(adminPassword)) isAdmin=true; else isAdmin=false;
 	}
 }

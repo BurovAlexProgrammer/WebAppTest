@@ -142,8 +142,10 @@ public class MySQL {
                     int price = resultSet.getInt(procedure.field.price);
                     int day = resultSet.getInt(procedure.field.day);
                     int time = resultSet.getInt(procedure.field.time);
+                    Date dTime = new Date();
+                    dTime.setTime(time);
                     int roomNumber = resultSet.getInt(procedure.field.roomNumber);
-                    Procedure newProcedure = new Procedure(id, name, doctorName, price, day, time, roomNumber);
+                    Procedure newProcedure = new Procedure(id, name, doctorName, price, day, dTime, roomNumber);
                     procedures = addRowProcedure(procedures, newProcedure);
 //                    procedures[i].setProcedureName(name);
 //                    procedures[i].setDoctorFullName(doctorName);

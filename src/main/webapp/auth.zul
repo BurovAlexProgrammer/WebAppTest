@@ -1,8 +1,10 @@
 <zk>
     <window>
         <toolbar>
-            <label value="AUTH"/>
-
+            <label value="Вход по администратором"/>
+            <textbox type="password" value="@bind(vm.password)"/>
+            <button label="Вход" onClick="@command('authAdmin')" visible="@load(!vm.isAdmin)"/>
+            <button label="Выход" onClick="@command('authAdmin')" visible="@load(vm.isAdmin)"/>
 
         </toolbar>
     </window>
